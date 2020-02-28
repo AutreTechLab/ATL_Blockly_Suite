@@ -32,7 +32,8 @@ var Code = {};
  * Lookup for names of supported languages.  Keys should be in ISO 639 format.
  */
 Code.LANGUAGE_NAME = {
-  'en': 'English'
+  'en': 'English',
+  'fr': 'French'
 };
 
 /**
@@ -77,27 +78,19 @@ var defaultXml =
     '</xml>';
 
 /**
- * Extracts a parameter from the URL.
- * If the parameter is absent default_value is returned.
- * @param {string} name The name of the parameter.
- * @param {string} defaultValue Value to return if paramater not found.
- * @return {string} The parameter value or the default value if not found.
- */
-Code.getStringParamFromUrl = function(name, defaultValue) {
-  var val = location.search.match(new RegExp('[?&]' + name + '=([^&]+)'));
-  return val ? decodeURIComponent(val[1].replace(/\+/g, '%20')) : defaultValue;
-};
-
-/**
+ * Extracts a parameter from the URL
  * Get the language of this user from the URL.
- * @return {string} User's language.
  */
 Code.getLang = function() {
-  var lang = Code.getStringParamFromUrl('lang', '');
+  var parsedUrl = new URL(window.location.href);
+  var lang = parsedUrl.pathname.replace(/\//g, '');
+  lang = lang.toLowerCase();
+  alert(lang);
   if (Code.LANGUAGE_NAME[lang] === undefined) {
     // Default to English.
     lang = 'en';
   }
+  alert(lang);
   return lang;
 };
 

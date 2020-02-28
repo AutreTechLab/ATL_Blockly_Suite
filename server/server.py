@@ -142,6 +142,15 @@ class CozmoBlockly(tornado.web.Application):
 			f.write(data)
 			f.close()
 
+	class ATLHomeHandler(tornado.web.RequestHandler):
+		def initialize(self, args):
+			self.args = args
+
+		def get(self, path):
+			path = '../atl-home/' + path
+
+			self.render(path + 'index.html')
+
 	class HomeHandler(tornado.web.RequestHandler):
 		def initialize(self, args):
 			self.args = args
@@ -162,6 +171,7 @@ class CozmoBlockly(tornado.web.Application):
 
 			self.render(path + 'index.html', includes=includes, name=self.args.name, nonsecure=nonsec)
 
+
 	def stop(self):
 		# with (yield self._lock.acquire()):
 		# 	self._executor.stop()
@@ -173,8 +183,12 @@ class CozmoBlockly(tornado.web.Application):
 		global cozmoBlockly, nodejs
 
 		app = CozmoBlockly([
-			(r'/cozmo/()', CozmoBlockly.HomeHandler, dict(args=args)),
-			(r'/cozmo/(.+)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../cozmo-blockly')),
+			(r'/()', CozmoBlockly.ATLHomeHandler, dict(args=args)),
+			(r'/EN/()', CozmoBlockly.HomeHandler , dict(args=args)),
+			(r'/FR/()', CozmoBlockly.HomeHandler , dict(args=args)),
+			(r'/EN/(.+)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../cozmo-blockly')),
+			(r'/FR/(.+)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../cozmo-blockly')),
+			(r'/static/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler,dict(path='../gallery')),
 			(r'/blockly/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../blockly')),
 			(r'/closure-library/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../closure-library')),
 			(r'/(saves)/(.*)', CozmoBlockly.SavesHandler),
