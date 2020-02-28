@@ -85,12 +85,10 @@ Code.getLang = function() {
   var parsedUrl = new URL(window.location.href);
   var lang = parsedUrl.pathname.replace(/\//g, '');
   lang = lang.toLowerCase();
-  alert(lang);
   if (Code.LANGUAGE_NAME[lang] === undefined) {
     // Default to English.
     lang = 'en';
   }
-  alert(lang);
   return lang;
 };
 

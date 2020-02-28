@@ -81,10 +81,10 @@ Blockly.Blocks['cozmo_on_start'] = {
   init: function() {
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_CENTRE)
-        .appendField("on start");
+        .appendField(Blockly.Msg.COZMO_BLOCK_ON_START_01);
     this.appendStatementInput("BODY");
     this.setColour(Blockly.Blocks.cozmo.HUE2);
-    this.setTooltip('Executes the program on start');
+    this.setTooltip(Blockly.Msg.COZMO_BLOCK_ON_START_02);
   }
 };
 

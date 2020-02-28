@@ -22,7 +22,7 @@ var MSG = {
   textVariable: "texte",
   httpRequestError: "Il y a eu un problème avec la demande.",
   linkAlert: "Partagez vos blocs avec ce lien:\n\n%1",
-  hashError: "Désolé, "%1" ne correspond à aucun programme enregistré.",
+  hashError: "Désolé, \"%1\" ne correspond à aucun programme enregistré.",
   xmlError: "Impossible de charger votre fichier sauvegardé. Peut-être a-t-il été créé avec une version différente de Blockly?",
-  badXml: "Erreur d'analyse XML:\n%1\n\nSélectionnez "OK" pour abandonner vos modifications ou "Annuler" pour continuer à modifier le XML."
+  badXml: "Erreur d'analyse XML:\n%1\n\nSélectionnez \"OK\" pour abandonner vos modifications ou \"Annuler\" pour continuer à modifier le XML."
 };
