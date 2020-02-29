@@ -25,7 +25,5 @@ var MSG = {
   hashError: "Désolé, \"%1\" ne correspond à aucun programme enregistré.",
   xmlError: "Impossible de charger votre fichier sauvegardé. Peut-être a-t-il été créé avec une version différente de Blockly?",
   badXml: "Erreur d'analyse XML:\n%1\n\nSélectionnez \"OK\" pour abandonner vos modifications ou \"Annuler\" pour continuer à modifier le XML.",
-  DialogFormSaveCode01: "Enregistrer le code",
-  DialogFormSaveCode02: "Nom du fichier",
   BlockCozmoSay01: "Je suis Cozmo !"
 };

@@ -468,3 +468,5 @@ Blockly.Msg.DIALOG_FORM_SAVE_CODE_01 = "Open";
 Blockly.Msg.DIALOG_FORM_SAVE_CODE_02 = "Save";
 Blockly.Msg.DIALOG_FORM_SAVE_CODE_03 = "Cancel";
 Blockly.Msg.DIALOG_FORM_SAVE_CODE_04 = "Are you sure you want to overwrite ";
+Blockly.Msg.DIALOG_FORM_SAVE_CODE_05 = "Save code";
+Blockly.Msg.DIALOG_FORM_SAVE_CODE_06 = "Filename";

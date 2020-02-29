@@ -468,3 +468,5 @@ Blockly.Msg.DIALOG_FORM_SAVE_CODE_01 = "Ouvrir";
 Blockly.Msg.DIALOG_FORM_SAVE_CODE_02 = "Enregistrer";
 Blockly.Msg.DIALOG_FORM_SAVE_CODE_03 = "Annuler";
 Blockly.Msg.DIALOG_FORM_SAVE_CODE_04 = "Es-tu sûr de vouloir remplacer ";
+Blockly.Msg.DIALOG_FORM_SAVE_CODE_05 = "Enregistrer le code";
+Blockly.Msg.DIALOG_FORM_SAVE_CODE_06 = "Nom du fichier";

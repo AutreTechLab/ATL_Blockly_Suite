@@ -341,6 +341,8 @@ Code.initDialog = function() {
   var filesElem = $('#files'),
     filenameElem = $('#filename');
 
+  document.getElementById("dialog-form").title = Blockly.Msg.DIALOG_FORM_SAVE_CODE_05;
+
   Code.dialog = $('#dialog-form').dialog({
     autoOpen: false,
     height: 400,
