@@ -348,7 +348,7 @@ Code.initDialog = function() {
     modal: true,
     buttons: [
       {
-        text: 'Open',
+        text: Blockly.Msg.DIALOG_FORM_SAVE_CODE_01,
         autofocus: '',
         click: function() {
           var filenameElem = $('#filename'),
@@ -356,12 +356,12 @@ Code.initDialog = function() {
 
           if (Code.discard()) {
             Code.loadXmlFromUrl('/saves/' + filename);
-            Code.dialog.dialog( "close" );
+            Code.dialog.dialog(Blockly.Msg.DIALOG_FORM_SAVE_CODE_01);
           }
         }
       },
       {
-        text: 'Save',
+        text: Blockly.Msg.DIALOG_FORM_SAVE_CODE_02,
         click: function() {
           var filenameElem = $('#filename'),
             filename = filenameElem.val();
@@ -370,7 +370,7 @@ Code.initDialog = function() {
             Code.sendXmlToUrl('/saves/' + filename);
             Code.dialog.dialog( "close" );
           } else {
-            if (confirm('Are you sure you want to overwrite "' + filename + '"?')) {
+            if (confirm(Blockly.Msg.DIALOG_FORM_SAVE_CODE_04 +' "' + filename + '"?')) {
               Code.sendXmlToUrl('/saves/' + filename);
               Code.dialog.dialog( "close" );
             }
@@ -378,7 +378,7 @@ Code.initDialog = function() {
         }
       },
       {
-        text: 'Cancel',
+        text: Blockly.Msg.DIALOG_FORM_SAVE_CODE_03,
         click: function() {
           Code.dialog.dialog( "close" );
         }
