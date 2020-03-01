@@ -341,7 +341,8 @@ Code.initDialog = function() {
   var filesElem = $('#files'),
     filenameElem = $('#filename');
 
-  document.getElementById("dialog-form").title = Blockly.Msg.DIALOG_FORM_SAVE_CODE_05;
+  document.getElementById("dialog-form").title = MSG['WorkspaceDialogFormSaveCode05'];
+  document.getElementById('dialog-form-label').textContent = MSG['WorkspaceDialogFormSaveCode06'];
 
   Code.dialog = $('#dialog-form').dialog({
     autoOpen: false,
@@ -350,7 +351,7 @@ Code.initDialog = function() {
     modal: true,
     buttons: [
       {
-        text: Blockly.Msg.DIALOG_FORM_SAVE_CODE_01,
+        text: MSG['WorkspaceDialogFormSaveCode01'],
         autofocus: '',
         click: function() {
           var filenameElem = $('#filename'),
@@ -358,12 +359,12 @@ Code.initDialog = function() {
 
           if (Code.discard()) {
             Code.loadXmlFromUrl('/saves/' + filename);
-            Code.dialog.dialog(Blockly.Msg.DIALOG_FORM_SAVE_CODE_01);
+            Code.dialog.dialog(MSG['WorkspaceDialogFormSaveCode01']);
           }
         }
       },
       {
-        text: Blockly.Msg.DIALOG_FORM_SAVE_CODE_02,
+        text: MSG['WorkspaceDialogFormSaveCode02'],
         click: function() {
           var filenameElem = $('#filename'),
             filename = filenameElem.val();
@@ -372,7 +373,7 @@ Code.initDialog = function() {
             Code.sendXmlToUrl('/saves/' + filename);
             Code.dialog.dialog( "close" );
           } else {
-            if (confirm(Blockly.Msg.DIALOG_FORM_SAVE_CODE_04 +' "' + filename + '"?')) {
+            if (confirm(MSG['WorkspaceDialogFormSaveCode04']+' "' + filename + '"?')) {
               Code.sendXmlToUrl('/saves/' + filename);
               Code.dialog.dialog( "close" );
             }
@@ -380,7 +381,7 @@ Code.initDialog = function() {
         }
       },
       {
-        text: Blockly.Msg.DIALOG_FORM_SAVE_CODE_03,
+        text: MSG['WorkspaceDialogFormSaveCode03'],
         click: function() {
           Code.dialog.dialog( "close" );
         }
@@ -616,9 +617,14 @@ Code.initLanguage = function() {
   languageMenu.addEventListener('change', Code.changeLanguage, true);
 
   // Inject language strings.
+  // ATL comment:  this is used for the Workplace localisation. The MSG hash is define in the /msg/<lang>.js file
   // document.title += ' ' + MSG['title'];
   // document.getElementById('title').textContent = MSG['title'];
-  document.getElementById('tab_blocks').textContent = MSG['blocks'];
+  document.getElementById('tab_blocks').textContent = MSG['WorkspaceTabBlocks'];
+  document.getElementById('tab_camera').textContent = MSG['WorkspaceTabCamera'];
+  document.getElementById('tab_3d').textContent = MSG['WorkspaceTab3d'];
+  document.getElementById('tab_python').textContent = MSG['WorkspaceTabPython'];
+  document.getElementById('tab_xml').textContent = MSG['WorkspaceTabXml'];
 
   document.getElementById('linkButton').title = MSG['linkTooltip'];
   document.getElementById('runButton').title = MSG['runTooltip'];
