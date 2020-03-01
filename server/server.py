@@ -231,7 +231,7 @@ def main():
 	signal.signal(signal.SIGTERM, signal_handler)
 
 	parser = argparse.ArgumentParser(description='Cozmo Blocks')
-	parser.add_argument('-n', '--name', default='childname',
+	parser.add_argument('-n', '--name', default='',
 	                    help='default file name to load/save')
 	parser.add_argument('-d', '--dev', action="store_true",
 						help='enable development mode (disables caching)')

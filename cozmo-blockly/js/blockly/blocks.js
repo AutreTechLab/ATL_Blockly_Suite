@@ -81,17 +81,17 @@ Blockly.Blocks['cozmo_on_start'] = {
   init: function() {
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_CENTRE)
-        .appendField("on start");
+        .appendField(Blockly.Msg.COZMO_ON_START_01);
     this.appendStatementInput("BODY");
     this.setColour(Blockly.Blocks.cozmo.HUE2);
-    this.setTooltip('Executes the program on start');
+    this.setTooltip(Blockly.Msg.COZMO_ON_START_02);
   }
 };
 
 Blockly.Blocks['cozmo_set_cube_model'] = {
   init: function() {
     this.jsonInit({
-      "message0": "Set %1 model on cube %2",
+      "message0": Blockly.Msg.COZMO_SET_CUBE_MODEL_01,
       "args0": [
         {
           "type": "field_dropdown",
@@ -122,10 +122,10 @@ Blockly.Blocks['cozmo_set_cube_model'] = {
 Blockly.Blocks['cozmo_add_static_model'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField('Add')
+        .appendField(Blockly.Msg.COZMO_ADD_STATIC_MODEL_05)
         .appendField(new Blockly.FieldDropdown([
-                      ["wood_wall", "WALL_WOOD"],
-                      ["brick_wall", "WALL_BRICK"]
+                      [Blockly.Msg.COZMO_ADD_STATIC_MODEL_01, "WALL_WOOD"],
+                      [Blockly.Msg.COZMO_ADD_STATIC_MODEL_02, "WALL_BRICK"]
                      ]),
                      'MODEL');
     this.appendValueInput("X1")
@@ -147,27 +147,27 @@ Blockly.Blocks['cozmo_add_static_model'] = {
     this.appendValueInput("DEPTH")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("depth");
+        .appendField(Blockly.Msg.COZMO_ADD_STATIC_MODEL_03);
     this.appendValueInput("HEIGHT")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("height");
+        .appendField(Blockly.Msg.COZMO_ADD_STATIC_MODEL_04);
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(Blockly.Blocks.cozmo.HUE);
-    this.setTooltip('Add a static object');
+    this.setTooltip(Blockly.Msg.COZMO_ADD_STATIC_MODEL_01);
   }
 };
 
 Blockly.Blocks['cozmo_maze'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Create maze");
+        .appendField(Blockly.Msg.COZMO_MAZE_01);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(Blockly.Blocks.cozmo.HUE);
-    this.setTooltip('Creates maze.');
+    this.setTooltip(Blockly.Msg.COZMO_MAZE_02);
 
     if (typeof MazeGenerator !== "undefined" && typeof Code !== "undefined") {
       var staticObjects = [];
@@ -190,25 +190,25 @@ Blockly.Blocks['cozmo_maze'] = {
 Blockly.Blocks['cozmo_play_animation'] = {
   init: function() {
     this.jsonInit({
-      "message0": "Play %1 animation",
+      "message0": Blockly.Msg.COZMO_PLAY_ANIMATION_01,
       "args0": [
         {
           "type": "field_dropdown",
           "name": "ANIMATION",
           "options": [
-            ["greeting", "GREETING"],
-            ["sneeze", "SNEEZE"],
-            ["what?", "WHAT"],
-            ["win", "WIN"],
-            ["lose", "LOSE"],
-            ["facepalm", "FACEPALM"],
-            ["beeping", "BEEPING"],
-            ["new object", "NEW_OBJECT"],
-            ["lost something", "LOST_SOMETHING"],
-            ["reject", "REJECT"],
-            ["failed", "FAILED"],
-            ["excited greeting", "EXCITED_GREETING"],
-            ["talky greeting", "TALKY_GREETING"]
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_02, "GREETING"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_03, "SNEEZE"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_04, "WHAT"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_05, "WIN"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_06, "LOSE"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_07, "FACEPALM"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_08, "BEEPING"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_09, "NEW_OBJECT"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_10, "LOST_SOMETHING"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_11, "REJECT"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_12, "FAILED"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_13, "EXCITED_GREETING"],
+            [Blockly.Msg.COZMO_PLAY_ANIMATION_14, "TALKY_GREETING"]
           ]
         }
       ],
@@ -222,19 +222,19 @@ Blockly.Blocks['cozmo_play_animation'] = {
 Blockly.Blocks['cozmo_play_emotion'] = {
   init: function() {
     this.jsonInit({
-      "message0": "Play %1 emotion",
+      "message0": Blockly.Msg.COZMO_PLAY_EMOTION_01,
       "args0": [
         {
           "type": "field_dropdown",
           "name": "EMOTION",
           "options": [
-            ["amazed", "AMAZED"],
-            ["pleased", "PLEASED"],
-            ["happy", "HAPPY"],
-            ["upset", "UPSET"],
-            ["angry", "ANGRY"],
-            ["bored", "BORED"],
-            ["startled", "STARTLED"]
+            [Blockly.Msg.COZMO_PLAY_EMOTION_02, "AMAZED"],
+            [Blockly.Msg.COZMO_PLAY_EMOTION_03, "PLEASED"],
+            [Blockly.Msg.COZMO_PLAY_EMOTION_04, "HAPPY"],
+            [Blockly.Msg.COZMO_PLAY_EMOTION_05, "UPSET"],
+            [Blockly.Msg.COZMO_PLAY_EMOTION_06, "ANGRY"],
+            [Blockly.Msg.COZMO_PLAY_EMOTION_07, "BORED"],
+            [Blockly.Msg.COZMO_PLAY_EMOTION_08, "STARTLED"]
           ]
         }
       ],
@@ -249,14 +249,14 @@ Blockly.Blocks['cozmo_lift'] = {
   init: function() {
     this.appendValueInput("LIFT")
         .setCheck("Number")
-        .appendField("lift height");
+        .appendField(Blockly.Msg.COZMO_LIFT_01);
     this.appendDummyInput()
-        .appendField("(0.0 to 1.0)");
+        .appendField(Blockly.Msg.COZMO_LIFT_02);
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(Blockly.Blocks.cozmo.HUE);
-    this.setTooltip('Set lift height. Range is 0.0 to 1.0');
+    this.setTooltip(Blockly.Msg.COZMO_LIFT_03);
   }
 };
 
@@ -264,14 +264,14 @@ Blockly.Blocks['cozmo_head'] = {
   init: function() {
     this.appendValueInput("HEAD")
         .setCheck("Number")
-        .appendField("head angle");
+        .appendField(Blockly.Msg.COZMO_HEAD_01);
     this.appendDummyInput()
-        .appendField("(-25.00° to 44.5°)");
+        .appendField(Blockly.Msg.COZMO_HEAD_02);
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(Blockly.Blocks.cozmo.HUE);
-    this.setTooltip('Set head angle. Range is -25.00° to 44.5°');
+    this.setTooltip(Blockly.Msg.COZMO_HEAD_03);
   }
 };
 
@@ -279,36 +279,36 @@ Blockly.Blocks['cozmo_delay'] = {
   init: function() {
     this.appendValueInput("DELAY")
         .setCheck("Number")
-        .appendField("delay for");
+        .appendField(Blockly.Msg.COZMO_DELAY_01);
     this.appendDummyInput()
-        .appendField("seconds");
+        .appendField(Blockly.Msg.COZMO_DELAY_02);
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(Blockly.Blocks.cozmo.HUE);
-    this.setTooltip('Do nothing for the specified amount of time');
+    this.setTooltip(Blockly.Msg.COZMO_DELAY_03);
   }
 };
 
 Blockly.Blocks['cozmo_wait_for_tap'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Wait for cube tap");
+        .appendField(Blockly.Msg.COZMO_WAIT_FOR_TAP_01);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(Blockly.Blocks.cozmo.HUE);
-    this.setTooltip('Waits until cube is tapped. After that you can check for which cube was tapped.');
+    this.setTooltip(Blockly.Msg.COZMO_WAIT_FOR_TAP_02);
   }
 };
 
 Blockly.Blocks['cozmo_stop'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Stop");
+        .appendField(Blockly.Msg.COZMO_STOP_01);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(Blockly.Blocks.cozmo.HUE);
-    this.setTooltip('Stops all motors.');
+    this.setTooltip(Blockly.Msg.COZMO_STOP_02);
   }
 };
 
@@ -316,15 +316,15 @@ Blockly.Blocks['cozmo_stop'] = {
 Blockly.Blocks['cozmo_turn'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Turn");
+        .appendField(Blockly.Msg.COZMO_TURN_01);
     this.appendValueInput("ANGLE")
         .setCheck("Number")
     this.appendDummyInput()
-        .appendField("(degrees)");
+        .appendField(Blockly.Msg.COZMO_TURN_02);
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('Turns by the given angle. Positive turns clockwise, negative - counter-clockwise');
+    this.setTooltip(Blockly.Msg.COZMO_TURN_03);
     this.setColour(Blockly.Blocks.cozmo.HUE);
   }
 };
@@ -332,19 +332,19 @@ Blockly.Blocks['cozmo_turn'] = {
 Blockly.Blocks['cozmo_drive_distance_speed'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Drive distance");
+        .appendField(Blockly.Msg.COZMO_DRIVE_DISTANCE_SPEED_01);
     this.appendValueInput("DISTANCE")
         .setCheck("Number")
     this.appendDummyInput()
-        .appendField("(cm) with speed");
+        .appendField(Blockly.Msg.COZMO_DRIVE_DISTANCE_SPEED_02);
     this.appendValueInput("SPEED")
         .setCheck("Number")
     this.appendDummyInput()
-        .appendField("(cm/s)");
+        .appendField(Blockly.Msg.COZMO_DRIVE_DISTANCE_SPEED_03);
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('Drives given distance at given speed. Distance < 0 to drive backwards. Speed must be > 0');
+    this.setTooltip(Blockly.Msg.COZMO_DRIVE_DISTANCE_SPEED_04);
     this.setColour(Blockly.Blocks.cozmo.HUE);
   }
 };
@@ -352,20 +352,20 @@ Blockly.Blocks['cozmo_drive_distance_speed'] = {
 Blockly.Blocks['cozmo_drive_wheels_speed'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Drive with speed: left wheel");
+        .appendField(Blockly.Msg.COZMO_DRIVE_WHEELS_SPEED_01);
     this.appendValueInput("L_SPEED")
         .setCheck("Number")
     this.appendDummyInput()
-        .appendField("(cm/s), right wheel");
+        .appendField(Blockly.Msg.COZMO_DRIVE_WHEELS_SPEED_02);
     this.appendValueInput("R_SPEED")
         .setCheck("Number")
     this.appendDummyInput()
-        .appendField("(cm/s)");
+        .appendField(Blockly.Msg.COZMO_DRIVE_WHEELS_SPEED_03);
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(Blockly.Blocks.cozmo.HUE);
-    this.setTooltip('Drives continuously until explicitly stopped. Be very careful with this one.');
+    this.setTooltip(Blockly.Msg.COZMO_DRIVE_WHEELS_SPEED_04);
   }
 };
 
@@ -373,11 +373,11 @@ Blockly.Blocks['cozmo_say'] = {
   init: function() {
     this.appendValueInput("TEXT")
         .setCheck("String")
-        .appendField("say");
+        .appendField(Blockly.Msg.COZMO_SAY_01);
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('Says text');
+    this.setTooltip(Blockly.Msg.COZMO_SAY_02);
     this.setColour(Blockly.Blocks.cozmo.HUE);
   }
 };
@@ -385,10 +385,10 @@ Blockly.Blocks['cozmo_say'] = {
 Blockly.Blocks['cozmo_goto_origin'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Go to origin");
+        .appendField(Blockly.Msg.COZMO_GOTO_ORIGIN_01);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('Goes to where Cozmo was when program started.');
+    this.setTooltip(Blockly.Msg.COZMO_GOTO_ORIGIN_02);
     this.setColour(Blockly.Blocks.cozmo.HUE);
   }
 };
@@ -396,7 +396,7 @@ Blockly.Blocks['cozmo_goto_origin'] = {
 Blockly.Blocks['cozmo_drive_to'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Drive to X:");
+        .appendField(Blockly.Msg.COZMO_DRIVE_TO_01);
     this.appendValueInput("X")
         .setCheck("Number")
     this.appendDummyInput()
@@ -406,7 +406,7 @@ Blockly.Blocks['cozmo_drive_to'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('Drives to the specified coordinates if possible (e.g. no obstacles/static objects prevent from accomplishing the task.');
+    this.setTooltip(Blockly.Msg.COZMO_DRIVE_TO_02);
     this.setColour(Blockly.Blocks.cozmo.HUE);
   }
 };
@@ -414,7 +414,7 @@ Blockly.Blocks['cozmo_drive_to'] = {
 Blockly.Blocks['cozmo_cube_seen_number_boolean'] = {
   init: function() {
     this.jsonInit({
-      "message0": "cube %1 been seen",
+      "message0": Blockly.Msg.COZMO_CUBE_SEEN_NUMBER_BOOLEAN_01,
       "args0": [
         {
           "type": "field_dropdown",
@@ -435,7 +435,7 @@ Blockly.Blocks['cozmo_cube_seen_number_boolean'] = {
 Blockly.Blocks['cozmo_cube_visible_number_boolean'] = {
   init: function() {
     this.jsonInit({
-      "message0": "cube %1 is visible",
+      "message0": Blockly.Msg.COZMO_CUBE_VISIBLE_NUMBER_BOOLEAN_01,
       "args0": [
         {
           "type": "field_dropdown",
@@ -456,7 +456,7 @@ Blockly.Blocks['cozmo_cube_visible_number_boolean'] = {
 Blockly.Blocks['cozmo_cube_distance_to'] = {
   init: function() {
     this.jsonInit({
-      "message0": "distance to cube %1 (cm)",
+      "message0": Blockly.Msg.COZMO_CUBE_DISTANCE_TO_01,
       "args0": [
         {
           "type": "field_dropdown",
@@ -477,7 +477,7 @@ Blockly.Blocks['cozmo_cube_distance_to'] = {
 Blockly.Blocks['cozmo_cube_distance_between'] = {
   init: function() {
     this.jsonInit({
-      "message0": "distance between cubes %1 and %2 (cm)",
+      "message0": Blockly.Msg.COZMO_CUBE_DISTANCE_BETWEEN_01,
       "args0": [
         {
           "type": "field_dropdown",
@@ -507,7 +507,7 @@ Blockly.Blocks['cozmo_cube_distance_between'] = {
 Blockly.Blocks['cozmo_cube_pickup'] = {
   init: function() {
     this.jsonInit({
-      "message0": "Pickup cube %1",
+      "message0": Blockly.Msg.COZMO_CUBE_PICKUP_01,
       "args0": [
         {
           "type": "field_dropdown",
@@ -529,7 +529,7 @@ Blockly.Blocks['cozmo_cube_pickup'] = {
 Blockly.Blocks['cozmo_cube_place_on_ground'] = {
   init: function() {
     this.jsonInit({
-      "message0": "Place cube %1 on ground",
+      "message0": Blockly.Msg.COZMO_CUBE_PLACE_ON_GROUND_01,
       "args0": [
         {
           "type": "field_dropdown",
@@ -551,7 +551,7 @@ Blockly.Blocks['cozmo_cube_place_on_ground'] = {
 Blockly.Blocks['cozmo_cube_place_on_cube'] = {
   init: function() {
     this.jsonInit({
-      "message0": "Place current cube on cube %1",
+      "message0": Blockly.Msg.COZMO_CUBE_PLACE_ON_CUBE_01,
       "args0": [
         {
           "type": "field_dropdown",
@@ -573,7 +573,7 @@ Blockly.Blocks['cozmo_cube_place_on_cube'] = {
 Blockly.Blocks['cozmo_cube_turn_toward'] = {
   init: function() {
     this.jsonInit({
-      "message0": "Turn to cube %1",
+      "message0": Blockly.Msg.COZMO_CUBE_TURN_TOWARD_01,
       "args0": [
         {
           "type": "field_dropdown",
@@ -596,17 +596,17 @@ Blockly.Blocks['cozmo_on_cube_tapped'] = {
   init: function() {
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_CENTRE)
-        .appendField("on cube tapped");
+        .appendField(Blockly.Msg.COZMO_ON_CUBE_TAPPED_01);
     this.appendStatementInput("BODY");
     this.setColour(Blockly.Blocks.cozmo.HUE2);
-    this.setTooltip('Executes a block of code when a cube is tapped');
+    this.setTooltip(Blockly.Msg.COZMO_ON_CUBE_TAPPED_02);
   }
 };
 
 Blockly.Blocks['cozmo_tapped_cube_number_boolean'] = {
   init: function() {
     this.jsonInit({
-      "message0": "cube %1 tapped",
+      "message0": Blockly.Msg.COZMO_TAPPED_CUBE_NUMBER_BOOLEAN_01,
       "args0": [
         {
           "type": "field_dropdown",
@@ -627,7 +627,7 @@ Blockly.Blocks['cozmo_tapped_cube_number_boolean'] = {
 Blockly.Blocks['cozmo_free_will'] = {
   init: function() {
     this.jsonInit({
-      "message0": "%1 free will",
+      "message0": Blockly.Msg.COZMO_FREE_WILL_01,
       "args0": [
         {
           "type": "field_dropdown",
