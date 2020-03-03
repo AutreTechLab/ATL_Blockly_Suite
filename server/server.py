@@ -136,7 +136,7 @@ class CozmoBlockly(tornado.web.Application):
 
 		def put(self, folder, file):
 			file = file.strip('/')
-			print('Saving ' + file)
+			print('[Server] SavesHandler: Saving ' + file)
 			data = self.request.body
 			f = open(os.path.join(folder, file + '.xml'), 'wb')
 			f.write(data)
@@ -156,20 +156,35 @@ class CozmoBlockly(tornado.web.Application):
 			self.args = args
 
 		def get(self, path):
-			path = '../cozmo-blockly/' + path
-			loader = tornado.template.Loader(path, whitespace='all')
+			cozmo_blockly_path = '../cozmo-blockly/' + path
+			thymio_blockly_path = '../thymio-blockly/' + path
+
+			loader = tornado.template.Loader(cozmo_blockly_path, whitespace='all')
 			file = 'includes.template'
 			if self.args.dev:
 				file = 'includes_debug.template'
 			t = loader.load(file)
 			includes = t.generate()
 
+			# Modularisation of the toolbox depending on the available robots
+			loader = tornado.template.Loader(cozmo_blockly_path, whitespace='all')
+			file = 'cozmo_blocks.xml'
+			t = loader.load(file)
+			cozmo_blocks = t.generate()
+
+			loader = tornado.template.Loader(thymio_blockly_path, whitespace='all')
+			file = 'thymio_blocks.xml'
+			t = loader.load(file)
+			thymio_blocks = t.generate()
+
 			if self.args.nonsecure:
 				nonsec = 'true'
 			else:
 				nonsec = 'false'
 
-			self.render(path + 'index.html', includes=includes, name=self.args.name, nonsecure=nonsec)
+			print('[Server] HomeHandler: Loading ' + cozmo_blockly_path + ' and ' + thymio_blockly_path)
+
+			self.render(cozmo_blockly_path + 'index.html', includes=includes, cozmo_blocks=cozmo_blocks, thymio_blocks=thymio_blocks, name=self.args.name, nonsecure=nonsec)
 
 
 	def stop(self):
@@ -190,6 +205,7 @@ class CozmoBlockly(tornado.web.Application):
 			(r'/FR/(.+)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../cozmo-blockly')),
 			(r'/static/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler,dict(path='../gallery')),
 			(r'/blockly/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../blockly')),
+			(r'/thymio-blockly/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler,dict(path='../thymio-blockly')),
 			(r'/closure-library/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../closure-library')),
 			(r'/(saves)/(.*)', CozmoBlockly.SavesHandler),
 			(r'/robot/submit', CozmoBlockly.RobotSubmitHandler),
