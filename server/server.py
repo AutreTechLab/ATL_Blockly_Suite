@@ -147,7 +147,7 @@ class CozmoBlockly(tornado.web.Application):
 			self.args = args
 
 		def get(self, path):
-			path = '../atl-home/' + path
+			path = '../atl-blockly/' + path
 
 			self.render(path + 'index.html')
 
@@ -206,6 +206,7 @@ class CozmoBlockly(tornado.web.Application):
 			(r'/static/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler,dict(path='../gallery')),
 			(r'/blockly/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../blockly')),
 			(r'/thymio-blockly/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler,dict(path='../thymio-blockly')),
+			(r'/atl-blockly/(.*)',tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler,dict(path='../atl-blockly')),
 			(r'/closure-library/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../closure-library')),
 			(r'/(saves)/(.*)', CozmoBlockly.SavesHandler),
 			(r'/robot/submit', CozmoBlockly.RobotSubmitHandler),

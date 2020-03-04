@@ -26,13 +26,8 @@
 'use strict';
 
 goog.provide('Blockly.Blocks.thymio');
-
 goog.require('Blockly.Blocks');
 
-alert("Hello! I am an alert box!!");
-
-Blockly.Blocks.cozmo.HUE = 210;
-Blockly.Blocks.cozmo.HUE2 = 118;
 
 Blockly.Blocks['thymio_event_button'] = {
   init: function() {

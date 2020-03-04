@@ -25,7 +25,6 @@
 'use strict';
 
 goog.provide('Blockly.Blocks.cozmo');
-
 goog.require('Blockly.Blocks');
 
 /**
