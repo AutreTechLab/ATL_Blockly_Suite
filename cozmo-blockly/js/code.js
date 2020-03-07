@@ -71,9 +71,10 @@ Blockly.FieldAngle.WRAP = 360;
 Blockly.Python.STATEMENT_PREFIX = 'bot.highlight(%1)\n';
 Blockly.Python.addReservedWords('cozmo, robot, bot, tapped_cube');
 
+
 var defaultXml =
     '<xml>' +
-    '  <block type="cozmo_on_start" deletable="false" x="13" y="13">' +
+    '  <block type="cozmo_on_start" deletable="true" x="13" y="13">' +
     '  </block>' +
     '</xml>';
 
@@ -81,6 +82,7 @@ var defaultXml =
  * Extracts a parameter from the URL
  * Get the language of this user from the URL.
  */
+
 Code.getLang = function() {
   var parsedUrl = new URL(window.location.href);
   var lang = parsedUrl.pathname.replace(/\//g, '');

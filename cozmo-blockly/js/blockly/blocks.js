@@ -79,6 +79,7 @@ Blockly.Blocks['cozmo_on_start'] = {
   init: function() {
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField(new Blockly.FieldImage("http://localhost:9090/static/cozmo02.jpeg", 15, 15, { alt: "*", flipRtl: "FALSE" }))
         .appendField(Blockly.Msg.COZMO_ON_START_01);
     this.appendStatementInput("BODY");
     this.setColour(Blockly.Blocks.cozmo.HUE2);

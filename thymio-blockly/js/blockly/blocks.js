@@ -28,6 +28,18 @@
 goog.provide('Blockly.Blocks.thymio');
 goog.require('Blockly.Blocks');
 
+Blockly.Blocks['thymio_initialize'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("http://localhost:9090/static/thymio.png", 15, 15, { alt: "*", flipRtl: "FALSE" }))
+        .appendField("THYMIO_ON_START");
+    this.appendStatementInput("NAME")
+        .setCheck(null);
+    this.setColour(20);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
 
 Blockly.Blocks['thymio_event_button'] = {
   init: function() {
@@ -86,6 +98,39 @@ Blockly.Blocks['thymio_event_shock'] = {
  this.setHelpUrl("");
   }
 };
+
+
+Blockly.Blocks['thymio_led'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("set")
+        .appendField(new Blockly.FieldDropdown([["THYMIO_LED_RGB_TOP","leds.top"], ["THYMIO_LED_RGB_BOTTOM_LEFT","leds.bottom.left"], ["LED_RGB_BOTTOM_RIGHT","leds.bottom.right"]]), "NAME")
+        .appendField("LED to");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldColour("#ff0000"), "LED_RGB_COLOR");
+    this.setInputsInline(true);
+    this.setColour(20);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['thymio_drive_cm'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("http://localhost:9090/static/thymio.png", 15, 15, { alt: "*", flipRtl: "FALSE" }))
+        .appendField("THYMIO_DRIVE_CM")
+        .appendField(new Blockly.FieldNumber(0, 0), "DISTANCE")
+        .appendField("at speed")
+        .appendField(new Blockly.FieldNumber(0, -500, 500), "SPEED");
+    this.setInputsInline(true);
+    this.setColour(20);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+
 /**
 Blockly.Blocks.thymio_event_timer={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_EVENT_TIMER,args0:[{type:"field_dropdown",name:"EVENT",options:[[Blockly.Msg.THYMIO_EVENT_TIMER_FIRST,"timer0"],[Blockly.Msg.THYMIO_EVENT_TIMER_SECOND,"timer1"]]}]});this.setColour(Blockly.Blocks.thymio.EVENTS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_EVENT_TIMER_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_EVENT_TIMER_TOOLTIP);this.appendStatementInput("HANDLER")}};
 Blockly.Blocks.thymio_event_sound={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_EVENT_SOUND,args0:[{type:"field_dropdown",name:"EVENT",options:[[Blockly.Msg.THYMIO_EVENT_SOUND_MIC,"mic"],[Blockly.Msg.THYMIO_EVENT_SOUND_FINISHED,"sound.finished"]]}]});this.setColour(Blockly.Blocks.thymio.EVENTS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_EVENT_SOUND_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_EVENT_SOUND_TOOLTIP);this.appendStatementInput("HANDLER")}};
@@ -94,8 +139,10 @@ Blockly.Blocks.thymio_event_update={init:function(){this.jsonInit({message0:Bloc
 this.setTooltip(Blockly.Msg.THYMIO_EVENT_UPDATED_TOOLTIP);this.appendStatementInput("HANDLER")}};
 Blockly.Blocks.thymio_led={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_LED,args0:[{type:"field_dropdown",name:"LED",options:[[Blockly.Msg.THYMIO_LED_TOP,"leds.top"],[Blockly.Msg.THYMIO_LED_BOTTOM_LEFT,"leds.bottom.left"],[Blockly.Msg.THYMIO_LED_BOTTOM_RIGHT,"leds.bottom.right"]]},{type:"field_colour",name:"COLOR",colour:"#ff0000"}]});this.setColour(Blockly.Blocks.thymio.LEDS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_LED_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_LED_TOOLTIP);this.setPreviousStatement(!0);
 this.setNextStatement(!0)}};
-Blockly.Blocks.thymio_led_rgb={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_LED_RGB,args0:[{type:"field_dropdown",name:"LED",options:[[Blockly.Msg.THYMIO_LED_RGB_TOP,"leds.top"],[Blockly.Msg.THYMIO_LED_RGB_BOTTOM_LEFT,"leds.bottom.left"],[Blockly.Msg.THYMIO_LED_RGB_BOTTOM_RIGHT,"leds.bottom.right"]]},{type:"input_value",name:"RED",check:"Number",align:"RIGHT"},{type:"input_value",name:"GREEN",check:"Number",align:"RIGHT"},{type:"input_value",name:"BLUE",check:"Number",align:"RIGHT"}]});
-this.setColour(Blockly.Blocks.thymio.LEDS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_LED_RGB_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_LED_RGB_TOOLTIP);this.setPreviousStatement(!0);this.setNextStatement(!0)}};
+*/
+
+/**
+
 Blockly.Blocks.thymio_led_circle={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_LED_CIRCLE,args0:[{type:"input_value",name:"CIRCLE0",check:"Number",align:"RIGHT"},{type:"input_value",name:"CIRCLE1",check:"Number",align:"RIGHT"},{type:"input_value",name:"CIRCLE2",check:"Number",align:"RIGHT"},{type:"input_value",name:"CIRCLE3",check:"Number",align:"RIGHT"},{type:"input_value",name:"CIRCLE4",check:"Number",align:"RIGHT"},{type:"input_value",name:"CIRCLE5",check:"Number",align:"RIGHT"},
 {type:"input_value",name:"CIRCLE6",check:"Number",align:"RIGHT"},{type:"input_value",name:"CIRCLE7",check:"Number",align:"RIGHT"}]});this.setColour(Blockly.Blocks.thymio.LEDS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_LED_CIRCLE_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_LED_CIRCLE_TOOLTIP);this.setPreviousStatement(!0);this.setNextStatement(!0)}};
 Blockly.Blocks.thymio_led_prox={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_LED_PROX,args0:[{type:"input_value",name:"PROX0",check:"Number",align:"RIGHT"},{type:"input_value",name:"PROX1",check:"Number",align:"RIGHT"},{type:"input_value",name:"PROX2",check:"Number",align:"RIGHT"},{type:"input_value",name:"PROX3",check:"Number",align:"RIGHT"},{type:"input_value",name:"PROX4",check:"Number",align:"RIGHT"},{type:"input_value",name:"PROX5",check:"Number",align:"RIGHT"},{type:"input_value",
@@ -106,10 +153,37 @@ this.setPreviousStatement(!0);this.setNextStatement(!0)}};
 Blockly.Blocks.thymio_led_temperature={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_LED_TEMPERATURE,args0:[{type:"input_value",name:"RED",check:"Number",align:"RIGHT"},{type:"input_value",name:"BLUE",check:"Number",align:"RIGHT"}]});this.setColour(Blockly.Blocks.thymio.LEDS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_LED_TEMPERATURE_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_LED_TEMPERATURE_TOOLTIP);this.setPreviousStatement(!0);this.setNextStatement(!0)}};
 Blockly.Blocks.thymio_led_rc_sound={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_LED_RC_SOUND,args0:[{type:"field_dropdown",name:"LED",options:[[Blockly.Msg.THYMIO_LED_RC_SOUND_RC,"leds.rc"],[Blockly.Msg.THYMIO_LED_RC_SOUND_SOUND,"leds.sound"]]},{type:"input_value",name:"INTENSITY",check:"Number",align:"RIGHT"}]});this.setColour(Blockly.Blocks.thymio.LEDS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_LED_RC_SOUND_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_LED_RC_SOUND_TOOLTIP);this.setPreviousStatement(!0);
 this.setNextStatement(!0)}};
-Blockly.Blocks.thymio_led_off={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_LED_OFF,args0:[{type:"field_dropdown",name:"LED",options:[[Blockly.Msg.THYMIO_LED_OFF_TOP,"leds.top"],[Blockly.Msg.THYMIO_LED_OFF_BOTTOM_LEFT,"leds.bottom.left"],[Blockly.Msg.THYMIO_LED_OFF_BOTTOM_RIGHT,"leds.bottom.right"],[Blockly.Msg.THYMIO_LED_OFF_CIRCLE,"leds.circle"],[Blockly.Msg.THYMIO_LED_OFF_PROX_H,"leds.prox.h"],[Blockly.Msg.THYMIO_LED_OFF_PROX_V,"leds.prox.v"],[Blockly.Msg.THYMIO_LED_OFF_RC,"leds.rc"],
+
+
+Blockly.Blocks.thymio_led_off={
+    init:function(){this.jsonInit({
+        message0:Blockly.Msg.THYMIO_LED_OFF,args0:[{
+            type:"field_dropdown",name:"LED",
+            options:[
+            [    Blockly.Msg.THYMIO_LED_OFF_TOP,"leds.top"],
+                [Blockly.Msg.THYMIO_LED_OFF_BOTTOM_LEFT,"leds.bottom.left"],[
+                Blockly.Msg.THYMIO_LED_OFF_BOTTOM_RIGHT,"leds.bottom.right"],
+                [Blockly.Msg.THYMIO_LED_OFF_CIRCLE,"leds.circle"],[
+                Blockly.Msg.THYMIO_LED_OFF_PROX_H,"leds.prox.h"],[
+                Blockly.Msg.THYMIO_LED_OFF_PROX_V,"leds.prox.v"],[
+                Blockly.Msg.THYMIO_LED_OFF_RC,"leds.rc"],
 [Blockly.Msg.THYMIO_LED_OFF_BUTTONS,"leds.buttons"],[Blockly.Msg.THYMIO_LED_OFF_TEMPERATURE,"leds.temperature"],[Blockly.Msg.THYMIO_LED_OFF_MICROPHONE,"leds.sound"]]}]});this.setColour(Blockly.Blocks.thymio.LEDS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_LED_OFF_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_LED_OFF_TOOLTIP);this.setPreviousStatement(!0);this.setNextStatement(!0)}};
-Blockly.Blocks.thymio_sound_system={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_SOUND_SYSTEM,args0:[{type:"field_dropdown",name:"SOUND",options:[[Blockly.Msg.THYMIO_SOUND_SYSTEM_STARTUP,"0"],[Blockly.Msg.THYMIO_SOUND_SYSTEM_SHUTDOWN,"1"],[Blockly.Msg.THYMIO_SOUND_SYSTEM_ARROW,"2"],[Blockly.Msg.THYMIO_SOUND_SYSTEM_CENTRAL,"3"],[Blockly.Msg.THYMIO_SOUND_SYSTEM_SCARY,"4"],[Blockly.Msg.THYMIO_SOUND_SYSTEM_COLLISION,"5"],[Blockly.Msg.THYMIO_SOUND_SYSTEM_TARGET_FRIENDLY,"6"],[Blockly.Msg.THYMIO_SOUND_SYSTEM_TARGET_DETECTED,
-"7"]]}]});this.setColour(Blockly.Blocks.thymio.ACTUATORS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_SOUND_SYSTEM_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_SOUND_SYSTEM_TOOLTIP);this.setPreviousStatement(!0);this.setNextStatement(!0)}};
+
+Blockly.Blocks.thymio_sound_system=
+    {init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_SOUND_SYSTEM,args0:[
+        {type:"field_dropdown",name:"SOUND",options:[[Blockly.Msg.THYMIO_SOUND_SYSTEM_STARTUP,"0"],
+        [Blockly.Msg.THYMIO_SOUND_SYSTEM_SHUTDOWN,"1"],[Blockly.Msg.THYMIO_SOUND_SYSTEM_ARROW,"2"],
+        [Blockly.Msg.THYMIO_SOUND_SYSTEM_CENTRAL,"3"],[Blockly.Msg.THYMIO_SOUND_SYSTEM_SCARY,"4"],
+        [Blockly.Msg.THYMIO_SOUND_SYSTEM_COLLISION,"5"],[Blockly.Msg.THYMIO_SOUND_SYSTEM_TARGET_FRIENDLY,"6"],
+        [Blockly.Msg.THYMIO_SOUND_SYSTEM_TARGET_DETECTED,
+"7"]]}]});
+    this.setColour(Blockly.Blocks.thymio.ACTUATORS_HUE);
+    this.setHelpUrl(Blockly.Msg.THYMIO_SOUND_SYSTEM_HELPURL);
+    this.setTooltip(Blockly.Msg.THYMIO_SOUND_SYSTEM_TOOLTIP);
+    this.setPreviousStatement(!0);this.setNextStatement(!0)}};
+
+/**
+
 Blockly.Blocks.thymio_sound_note={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_SOUND_NOTE,args0:[{type:"input_value",name:"FREQ",check:"Number"},{type:"input_value",name:"DURATION",check:"Number"}]});this.setColour(Blockly.Blocks.thymio.ACTUATORS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_SOUND_NOTE_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_SOUND_NOTE_TOOLTIP);this.setPreviousStatement(!0);this.setNextStatement(!0)}};
 Blockly.Blocks.thymio_sound_stop={init:function(){this.setColour(Blockly.Blocks.thymio.ACTUATORS_HUE);this.setHelpUrl(Blockly.Msg.THYMIO_SOUND_STOP_HELPURL);this.setTooltip(Blockly.Msg.THYMIO_SOUND_STOP_TOOLTIP);this.setPreviousStatement(!0);this.setNextStatement(!0);this.appendDummyInput().appendField(Blockly.Msg.THYMIO_SOUND_STOP)}};
 Blockly.Blocks.thymio_button_pressed={init:function(){this.jsonInit({message0:Blockly.Msg.THYMIO_BUTTON_PRESSED,args0:[{type:"field_dropdown",name:"BUTTON",options:[[Blockly.Msg.THYMIO_BUTTON_PRESSED_CENTER,"button.center"],[Blockly.Msg.THYMIO_BUTTON_PRESSED_FORWARD,"button.forward"],[Blockly.Msg.THYMIO_BUTTON_PRESSED_BACKWARD,"button.backward"],[Blockly.Msg.THYMIO_BUTTON_PRESSED_LEFT,"button.left"],[Blockly.Msg.THYMIO_BUTTON_PRESSED_RIGHT,"button.right"]]}]});this.setColour(Blockly.Blocks.logic.HUE);

@@ -1,24 +1,23 @@
 #!/usr/bin/python
+##################################################
+## Example using Thymio and Python to test the setup
+##################################################
+## Author: Autre Techlab
+## Email: autretechlab@gmail.com
+##################################################
 
 import dbus
 import dbus.mainloop.glib
-#import glib
-#import gobject
+from gi.repository import GObject as gobject
+from gi.repository import GLib as glib
 import pygame
 import sys
-
-import gi.repository
+import os
 
 class ThymioController(object):
     def __init__(self, filename):
-        # init the main loop and joystick
+        # init the main loop and sends the ASEBA code to the Thymio bot for the on-robot computations
         dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-        pygame.init()
-#        self.joystick = pygame.joystick.Joystick(0)
-#        self.joystick.init()
-        self.ox = 0
-        self.oy = 0
-        self.oc = [0] * 3
 
         # get stub of the Aseba network
         bus = dbus.SessionBus()
@@ -32,8 +31,8 @@ class ThymioController(object):
                                       error_handler=self.dbusError
                                       )
 
-        # schedules first scan of joystick
-        glib.timeout_add(20, self.scanJoystick)
+        # schedules first interaction with the Robot
+        glib.timeout_add(20, self.callThymio)
 
     def run(self):
         # run event loop
@@ -49,42 +48,40 @@ class ThymioController(object):
         print('dbus error: %s' % str(e))
         self.loop.quit()
 
-    def scanJoystick(self):
+    def callThymio(self):
         # if no loop is running, skip function
         if not self.loop.is_running():
             return
 
-        # scan joystick and send command to Thymio
-        pygame.event.pump()
-  #      x = self.joystick.get_axis(0) * 300
- #       y = -self.joystick.get_axis(1) * 300
-#        c = [self.joystick.get_button(i) for i in range(3)]
-
         # send speed command
-        if x != self.ox or y != self.oy:
-            self.asebaNetwork.SendEventName('SetSpeed',
-                                            [y + x, y - x],
-                                            reply_handler=self.dbusReply,
-                                            error_handler=self.dbusError
-                                            )
-            self.ox, self.oy = x, y
+
+        motorLeftTarget = 0
+        motorRightTarget = 0
+        self.asebaNetwork.SendEventName('SetSpeed',
+                                        [motorLeftTarget, motorRightTarget],
+                                        reply_handler=self.dbusReply,
+                                        error_handler=self.dbusError
+                                        )
 
         # send color command
-        if cmp(c, self.oc) != 0:
-            self.asebaNetwork.SendEventName('SetColor',
-                                            map(lambda x: 32 * x, c),
-                                            reply_handler=self.dbusReply,
-                                            error_handler=self.dbusError
-                                            )
-            self.oc = c
+
+        self.asebaNetwork.SendEventName('SetColor',
+                                        [ 6, 13, 32],
+                                        reply_handler=self.dbusReply,
+                                        error_handler=self.dbusError
+                                        )
 
         # read and display horizontal sensors
-        horizontalProximity = self.asebaNetwork.GetVariable(
+        proxHorizontal = self.asebaNetwork.GetVariable(
             'thymio-II', 'prox.horizontal')
-        print(', '.join(map(str, horizontalProximity)))
+
+        acc = self.asebaNetwork.GetVariable(
+            'thymio-II', 'acc')
+
+        print("prox.horizontal: " + (', '.join(map(str, proxHorizontal))) + "\t acc: " + (', '.join(map(str, acc))))
 
         # reschedule scan of joystick
-        glib.timeout_add(20, self.scanJoystick)
+        glib.timeout_add(20, self.callThymio)
 
 
 def main():

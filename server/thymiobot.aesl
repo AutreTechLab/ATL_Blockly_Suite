@@ -1,0 +1,85 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+<event size="2" name="SetSpeed"/>
+<event size="3" name="SetColor"/>
+<event size="1" name="SetSoundSystem"/>
+<event size="1" name="SetProxComm"/>
+<event size="2" name="DriveCM"/>
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="1" name="thymio-II"># reset outputs
+var t
+var v
+var speed
+var dist_cm
+
+call sound.system(-1)
+call leds.top(0,0,0)
+call leds.bottom.left(0,0,0)
+call leds.bottom.right(0,0,0)
+call leds.circle(0,0,0,0,0,0,0,0)
+timer.period[0] = 0
+
+# Internal events for on-robot computations
+
+onevent prox
+	when prox.ground.delta[0] &lt;= 400 and prox.ground.delta[1] &lt;= 400 do
+		call leds.top(32,0,0)
+		motor.right.target = 0
+		motor.left.target = 0
+	end
+
+	when prox.ground.delta[0] >= 450 and prox.ground.delta[1] >= 450 do
+		call leds.top(0,32,0)
+	end
+
+onevent timer0
+	motor.left.target = 0
+	motor.right.target = 0
+	timer.period[0] = 0
+	call leds.top(32,32,32)
+	
+# External events
+
+onevent SetSpeed
+motor.left.target = event.args[0]
+motor.right.target = event.args[1]
+
+onevent SetColor
+call leds.top(event.args[0], event.args[1], event.args[2])
+call leds.bottom.left(event.args[0], event.args[1], event.args[2])
+call leds.bottom.right(event.args[0], event.args[1], event.args[2])
+
+onevent SetSoundSystem
+call sound.system(event.args[0])  # 1 = ON, -1 = OFF
+
+onevent SetProxComm
+call prox.comm.enable(event.args[0])
+
+onevent DriveCM
+call leds.top(0,0,0)
+dist_cm = event.args[0]
+speed = event.args[1]
+v = 20 * speed / 500
+t =  dist_cm / v
+timer.period[0] = (t * 1000)
+motor.left.target = event.args[1]
+motor.right.target = event.args[1]
+#Max speed = 20cm/s
+
+
+</node>
+
+
+</network>

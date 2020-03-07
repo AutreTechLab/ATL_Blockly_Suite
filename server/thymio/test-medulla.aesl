@@ -15,14 +15,17 @@
 
 
 <!--node thymio-II-->
-<node nodeId="1" name="thymio-II">onevent SetSpeed
+<node nodeId="1" name="thymio-II">
+onevent SetSpeed
 motor.left.target = event.args[0]
 motor.right.target = event.args[1]
 
 onevent SetColor
 call leds.top(event.args[0], event.args[1], event.args[2])
 call leds.bottom.left(event.args[0], event.args[1], event.args[2])
-call leds.bottom.right(event.args[0], event.args[1], event.args[2])</node>
+call leds.bottom.right(event.args[0], event.args[1], event.args[2])
+
+</node>
 
 
 </network>

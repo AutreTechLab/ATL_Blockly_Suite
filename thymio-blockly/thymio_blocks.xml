@@ -1,6 +1,7 @@
 
       <category name="Thymio" colour="10">
             <category name="Evénements" colour="10">
+            <block type="thymio_initialize"></block>
             <block type="thymio_event_button"></block>
             <block type="thymio_event_prox"></block>
             <block type="thymio_event_prox_ground"></block>
@@ -53,6 +54,7 @@
           </category>
           <category name="Actuateurs" colour="60">
             <block type="thymio_motors_stop"></block>
+            <block type="thymio_drive_cm"></block>
             <block type="thymio_motors_start">
               <value name="SPEED">
                 <shadow type="math_number">
