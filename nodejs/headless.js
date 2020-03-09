@@ -35,7 +35,8 @@ require('../cozmo-blockly/js/blockly/python_generator.js');
 require('../thymio-blockly/js/blockly/blocks.js');
 require('../thymio-blockly/js/blockly/python_generator.js');
 
-require('../blockly/msg/messages.js');
+//require('../blockly/msg/messages.js');
+require('../blockly/msg/js/en.js'); // fix ATL issue  #10
 
 Blockly.Python.STATEMENT_PREFIX = 'bot.highlight(%1)\n';
 
@@ -45,7 +46,7 @@ var bodyParser = require('body-parser')
 var app = express();
 
 app.use(bodyParser.text());
-
+console.log('Headless');
 app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('Something broke!');
