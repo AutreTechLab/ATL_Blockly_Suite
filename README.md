@@ -1,4 +1,5 @@
 ##  AutreTechLab Blockly Suite for Educational Robotics
+<img src="https://github.com/AutreTechLab/ATL_Blockly_Suite/raw/master/gallery/ATL-Suite2.jpg" width="400"/></a>
 
 Our goal is to introduce children and young people between the ages of 8 and 18 to the world of technology and coding through the use of robotics.
 
