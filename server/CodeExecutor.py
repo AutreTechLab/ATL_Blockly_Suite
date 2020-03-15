@@ -10,7 +10,7 @@ class CodeExecutor():
 		self._nocozmo = nocozmo
 		self._enableAruco = enableAruco
 		if nonsecure:
-			print("WARNING: Code will be executed in non-secure manner - Python code is accepted from the network for execution!")
+			print("[Code Executor] WARNING: Code will be executed in non-secure manner - Python code is accepted from the network for execution!")
 
 	def start(self, code):
 		self.stop()
@@ -25,7 +25,7 @@ class CodeExecutor():
 					data=bytes(code, 'utf-8'))
 				with urllib.request.urlopen(req) as f:
 					toExecute = f.read().decode('utf-8')
-				print('Executing code:')
+				print('[Code Executor] Executing code:')
 				print(toExecute)
 			except Exception as e:
 				import traceback
@@ -33,10 +33,10 @@ class CodeExecutor():
 				raise e
 
 		if toExecute.find("def on_start():") == -1:
-			print("Block on_start() not defined")
+			print("[Code Executor] Block on_start() not defined")
 			return
 
-		starter_code = toExecute + """
+		starter_code = 'AtlDebugLevel = None\n' +  toExecute + """
 try:
 	if callable(on_cube_tapped):
 		robot.world.add_event_handler(cozmo.objects.EvtObjectTapped, on_cube_tapped)
@@ -53,6 +53,7 @@ except NameError:
 on_start()
 bot.resetCustomObjects()
 """
+		print("[Code Executor]" + starter_code)
 
 		self._starter = Process(target=self._exec_code, args=(starter_code, ))
 		self._starter.start()
@@ -66,7 +67,7 @@ bot.resetCustomObjects()
 	def _exec_code(self, code):
 
 		def signal_handler(signal, frame):
-			print('CodeExecutor process got ' + str(signal) + ' signal. Exitting...')
+			print('[Code Executor] Process got ' + str(signal) + ' signal. Exitting...')
 			exit(0)
 
 		signal.signal(signal.SIGINT, signal_handler)

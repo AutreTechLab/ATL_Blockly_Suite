@@ -21,6 +21,18 @@ class CozmoBot:
 		self._wsClient = WebSocketClient('ws://localhost:9090/WsPub')
 		self._wsClient.connect()
 
+		self._camClient = WebSocketClient('ws://localhost:9090/camPub')
+		self._camClient.connect()
+
+		self._wsClient = WebSocketClient('ws://localhost:9090/WsPub')
+		self._wsClient.connect()
+
+		self._consoleClient = WebSocketClient('ws://localhost:9090/consolePub')
+		self._consoleClient.connect()
+
+		self._blocksClient = WebSocketClient('ws://localhost:9090/blocksPub')
+		self._blocksClient.connect()
+
 		if self._aruco:
 			self._dataPubThread = threading.Thread(target=self.feedRobotDataInThread)
 			self._dataPubThread.daemon = True
@@ -29,7 +41,11 @@ class CozmoBot:
 		bot = self
 
 		import cozmo
+
 		exec(code, locals(), locals())
+
+	def consoleLog(self, msgdata):
+		self._consoleClient.send(msgdata)
 
 	def feedRobotDataInThread(self):
 		print('Starting data feed')
@@ -204,9 +220,57 @@ class CozmoBot:
 		}
 		self._wsClient.send(json.dumps(data))
 
-	def highlight(self, block):
-		data = {
-			'highlight': block
-		}
-		# self._wsClient.send(json.dumps(data))
+	def highlight(self, block, AtlDebugLevel):
+		self._blocksClient.send(block)
+		if AtlDebugLevel == 1:
+			time.sleep(1)
+		if AtlDebugLevel == 2:
+			time.sleep(2)
+		if AtlDebugLevel == 3:
+			print(block, AtlDebugLevel)
+			time.sleep(5)
 
+
+
+	# ATL: Add function for custom Object processing
+	#  waitForCustonObject()
+	# defineCustomCube(<edge in mm>,
+	# defineCustomWall(
+
+	def handle_object_appeared(evt, **kw):
+		# This will be called whenever an EvtObjectAppeared is dispatched -
+		# whenever an Object comes into view.
+		if isinstance(evt.obj, CustomObject):
+			print("[Bot] Cozmo started seeing a %s" % str(evt.obj.object_type))
+
+	def handle_object_disappeared(evt, **kw):
+		# This will be called whenever an EvtObjectDisappeared is dispatched -
+		# whenever an Object goes out of view.
+		if isinstance(evt.obj, CustomObject):
+			print("[Bot] Cozmo stopped seeing a %s" % str(evt.obj.object_type))
+
+#	def waitForCustonObject(self):
+#		print("[Bot] Waiting for Custom Object")
+#		return self._robot.world.wait_for(cozmo.objects.EvtObjectTapped, timeout=None).obj
+
+	def defineCustomCube(self, CustomObjectMarker, x, md1, md2 ):
+		# Add event handlers for whenever Cozmo sees a new object
+		self.add_event_handler(cozmo.objects.EvtObjectAppeared, handle_object_appeared)
+		self.add_event_handler(cozmo.objects.EvtObjectDisappeared, handle_object_disappeared)
+
+		# define a unique cube (44mm x 44mm x 44mm) (approximately the same size as a light cube)
+		# with a 30mm x 30mm Diamonds2 image on every face
+		cube_obj = self.world.define_custom_cube(CustomObjectTypes.CustomType00,
+												  CustomObjectMarker,
+												  x,
+												  md1, md2, True)
+
+		if (cube_obj is not None):
+			print("[Bot] Cube object defined successfully! " + cube_obj)
+		else:
+			print("[Bot] Cube object definition failed!")
+			return
+
+		print("Show the " + CustomObjectMarker + " to Cozmo and you will see the related objects "
+			  "annotated in Cozmo's view window, you will also see print messages "
+			  "everytime a custom object enters or exits Cozmo's view.")

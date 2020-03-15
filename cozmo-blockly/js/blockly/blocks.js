@@ -25,7 +25,6 @@
 'use strict';
 
 goog.provide('Blockly.Blocks.cozmo');
-
 goog.require('Blockly.Blocks');
 
 /**
@@ -34,10 +33,30 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks.cozmo.HUE = 210;
 Blockly.Blocks.cozmo.HUE2 = 118;
 
+/**
+ * ATL: cube and custom marker images
+ */
+
 var cubes = {
   "1": {"src": "img/thumbnails/cube1.png", "width": 13, "height": 11, "alt": "#1"},
   "2": {"src": "img/thumbnails/cube2.png", "width": 13, "height": 11, "alt": "#2"},
-  "3": {"src": "img/thumbnails/cube3.png", "width": 13, "height": 11, "alt": "#3"}
+  "3": {"src": "img/thumbnails/cube3.png", "width": 13, "height": 11, "alt": "#3"},
+  "4": {"src": "img/thumbnails/SDK_2Circles.png", "width": 26, "height": 22, "alt": "2 Circles"},
+  "5": {"src": "img/thumbnails/SDK_2Diamonds.png", "width": 26, "height": 22, "alt": "2 Diamonds"},
+  "6": {"src": "img/thumbnails/SDK_2Hexagons.png", "width": 26, "height": 22, "alt": "2 Hexagons"},
+  "7": {"src": "img/thumbnails/SDK_2Triangles.png", "width": 26, "height": 22, "alt": "2 Triangles"},
+  "8": {"src": "img/thumbnails/SDK_3Circles.png", "width": 26, "height": 22, "alt": "3 Circles"},
+  "9": {"src": "img/thumbnails/SDK_3Diamonds.png", "width": 26, "height": 22, "alt": "3 Diamonds"},
+  "10": {"src": "img/thumbnails/SDK_3Hexagons.png", "width": 26, "height": 22, "alt": "3 Hexagons"},
+  "11": {"src": "img/thumbnails/SDK_3Triangles.png", "width": 26, "height": 22, "alt": "3 Triangles"},
+  "12": {"src": "img/thumbnails/SDK_4Circles.png", "width": 26, "height": 22, "alt": "4 Circles"},
+  "13": {"src": "img/thumbnails/SDK_4Diamonds.png", "width": 26, "height": 22, "alt": "4 Diamonds"},
+  "14": {"src": "img/thumbnails/SDK_4Hexagons.png", "width": 26, "height": 22, "alt": "4 Hexagons"},
+  "15": {"src": "img/thumbnails/SDK_4Triangles.png", "width": 26, "height": 22, "alt": "4 Triangles"},
+  "16": {"src": "img/thumbnails/SDK_5Circles.png", "width": 26, "height": 22, "alt": "5 Circles"},
+  "17": {"src": "img/thumbnails/SDK_5Diamonds.png", "width": 26, "height": 22, "alt": "5 Diamonds"},
+  "18": {"src": "img/thumbnails/SDK_5Hexagons.png", "width": 26, "height": 22, "alt": "5 Hexagons"},
+  "19": {"src": "img/thumbnails/SDK_5Triangles.png", "width": 26, "height": 22, "alt": "5 Triangles"}
 };
 
 // A hack to prevent rendering degree symbol as it is flaky.
@@ -76,16 +95,7 @@ Blockly.Blocks['math_angle'] = {
   }
 };
 
-Blockly.Blocks['cozmo_on_start'] = {
-  init: function() {
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_CENTRE)
-        .appendField(Blockly.Msg.COZMO_ON_START_01);
-    this.appendStatementInput("BODY");
-    this.setColour(Blockly.Blocks.cozmo.HUE2);
-    this.setTooltip(Blockly.Msg.COZMO_ON_START_02);
-  }
-};
+
 
 Blockly.Blocks['cozmo_set_cube_model'] = {
   init: function() {
@@ -452,6 +462,40 @@ Blockly.Blocks['cozmo_cube_visible_number_boolean'] = {
   }
 };
 
+Blockly.Blocks['cozmo_object_visible_number_boolean'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.COZMO_OBJECT_VISIBLE_NUMBER_BOOLEAN_01);
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([
+                                                    [cubes["4"],"1"],
+                                                    [cubes["5"],"2"],
+                                                    [cubes["6"],"3"],
+                                                    [cubes["7"],"4"],
+                                                    [cubes["8"],"5"],
+                                                    [cubes["9"],"6"],
+                                                    [cubes["10"],"7"],
+                                                    [cubes["11"],"8"],
+                                                    [cubes["12"],"9"],
+                                                    [cubes["13"],"10"],
+                                                    [cubes["14"],"11"],
+                                                    [cubes["15"],"12"],
+                                                    [cubes["16"],"13"],
+                                                    [cubes["17"],"14"],
+                                                    [cubes["18"],"15"],
+                                                    [cubes["19"],"16"]
+                                                ]), "OB");
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.COZMO_OBJECT_VISIBLE_NUMBER_BOOLEAN_02);
+    this.setInputsInline(true);
+    this.setOutput(true, "Boolean");
+    this.setColour(120);
+ this.setTooltip(Blockly.Msg.COZMO_OBJECT_VISIBLE_NUMBER_BOOLEAN_03);
+ this.setHelpUrl("");
+  }
+};
+
+
 Blockly.Blocks['cozmo_cube_distance_to'] = {
   init: function() {
     this.jsonInit({
@@ -641,5 +685,83 @@ Blockly.Blocks['cozmo_free_will'] = {
       "previousStatement": null,
       "nextStatement": null,
     });
+  }
+};
+
+// ATL Custom Objects
+
+Blockly.Blocks['cozmo_define_custom_cube'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.COZMO_DEFINE_CUSTOM_CUBE_01);
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([
+                                                    [cubes["4"],"CustomObjectMarkers.Circles2"],
+                                                    [cubes["5"],"CustomObjectMarkers.Diamonds2"],
+                                                    [cubes["6"],"CustomObjectMarkers.Hexagons2"],
+                                                    [cubes["7"],"CustomObjectMarkers.Triangles2"],
+                                                    [cubes["8"],"CustomObjectMarkers.Circles3"],
+                                                    [cubes["9"],"CustomObjectMarkers.Diamonds3"],
+                                                    [cubes["10"],"CustomObjectMarkers.Hexagons3"],
+                                                    [cubes["11"],"CustomObjectMarkers.Triangles3"],
+                                                    [cubes["12"],"CustomObjectMarkers.Circles4"],
+                                                    [cubes["13"],"CustomObjectMarkers.Diamonds4"],
+                                                    [cubes["14"],"CustomObjectMarkers.Hexagons4"],
+                                                    [cubes["15"],"CustomObjectMarkers.Triangles4"],
+                                                    [cubes["16"],"CustomObjectMarkers.Circles5"],
+                                                    [cubes["17"],"CustomObjectMarkers.Diamonds5"],
+                                                    [cubes["18"],"CustomObjectMarkers.Hexagons5"],
+                                                    [cubes["19"],"CustomObjectMarkers.Triangles5"]
+                                                ]), "CUSTOM_MARKER");
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.COZMO_DEFINE_CUSTOM_CUBE_02);
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([
+                                                    ["00","CustomObjectTypes.CustomType00"],
+                                                    ["01","CustomObjectTypes.CustomType01"],
+                                                    ["02","CustomObjectTypes.CustomType02"],
+                                                    ["03","CustomObjectTypes.CustomType03"],
+                                                    ["04","CustomObjectTypes.CustomType04"],
+                                                    ["05","CustomObjectTypes.CustomType05"],
+                                                    ["06","CustomObjectTypes.CustomType06"],
+                                                    ["07","CustomObjectTypes.CustomType07"],
+                                                    ["08","CustomObjectTypes.CustomType08"],
+                                                    ["09","CustomObjectTypes.CustomType09"],
+                                                    ["10","CustomObjectTypes.CustomType10"],
+                                                    ["11","CustomObjectTypes.CustomType11"],
+                                                    ["12","CustomObjectTypes.CustomType12"],
+                                                    ["13","CustomObjectTypes.CustomType13"],
+                                                    ["14","CustomObjectTypes.CustomType14"],
+                                                    ["15","CustomObjectTypes.CustomType15"],
+                                                    ["16","CustomObjectTypes.CustomType16"],
+                                                    ["17","CustomObjectTypes.CustomType17"],
+                                                    ["18","CustomObjectTypes.CustomType18"],
+                                                    ["19","CustomObjectTypes.CustomType19"]
+                                                ]), "CUSTOM_TYPE");
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.COZMO_DEFINE_CUSTOM_CUBE_03)
+        .appendField(new Blockly.FieldNumber(0), "CUBE_DIMENSION")
+        .appendField(Blockly.Msg.COZMO_DEFINE_CUSTOM_CUBE_04)
+        .appendField(new Blockly.FieldNumber(0), "MARKER_DIMENSION");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(120);
+ this.setTooltip(Blockly.Msg.COZMO_DEFINE_CUSTOM_CUBE_05);
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['cozmo_wait_for_custom_object'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.COZMO_WAIT_FOR_CUSTOM_OBJECT_01);
+    this.setInputsInline(true);
+ //   this.setPreviousStatement(true, null);
+//    this.setNextStatement(true, null);
+    this.setOutput(true, null);
+    this.setColour(120);
+ this.setTooltip("");
+ this.setHelpUrl("");
   }
 };
