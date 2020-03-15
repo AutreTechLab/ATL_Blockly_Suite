@@ -7,6 +7,9 @@ try:
 	import tornado.template
 	from tornado import locks, gen
 	from tornado.platform.asyncio import AsyncIOMainLoop
+	from tornado import gen
+	from tornado.options import options, define
+	from tornado.queues import Queue
 except ImportError:
 	sys.exit("Cannot import Tornado: Do `pip3 install --user tornado` to install")
 
@@ -35,6 +38,60 @@ def signal_handler(signal, frame):
 	exit(0)
 
 class CozmoBlockly(tornado.web.Application):
+
+	class WSBlocksSubHandler(tornado.websocket.WebSocketHandler):
+		def open(self):
+			print('[Server] WSBlocksSub client connected')
+			self.application._blocks = self
+
+		def on_close(self):
+			print('[Server] WSBlocksSub client disconnected')
+
+		def on_message(self, message):
+			print('[Server] WSBlocksSub client message: ' + message)
+			# echo message back to client
+			self.write_message(message)
+
+	class WSBlocksPubHandler(tornado.websocket.WebSocketHandler):
+		def open(self):
+			print('[Server]  WSBlocksSPub Handler client connected')
+
+		def on_message(self, message):
+			try:
+				if self.application._blocks:
+					self.application._blocks.write_message(message)
+			except Exception:
+				pass
+
+		def on_close(self):
+			print('[Server]  WSConsolePub client disconnected')
+
+	class WSConsoleSubHandler(tornado.websocket.WebSocketHandler):
+		def open(self):
+			print('[Server] WSConsoleSub client connected')
+			self.application._console = self
+
+		def on_close(self):
+			print('[Server] WSConsoleSub client disconnected')
+
+		def on_message(self, message):
+			print('[Server] WSConsoleSub client message: ' + message)
+			# echo message back to client
+			self.write_message(message)
+
+	class WSConsolePubHandler(tornado.websocket.WebSocketHandler):
+		def open(self):
+			print('[Server]  WSConsolePub client connected')
+
+		def on_message(self, message):
+			try:
+				if self.application._console:
+					self.application._console.write_message(message)
+			except Exception:
+				pass
+
+		def on_close(self):
+			print('[Server]  WSConsolePub client disconnected')
 
 	class WS3dSubHandler(tornado.websocket.WebSocketHandler):
 		def open(self):
@@ -136,7 +193,7 @@ class CozmoBlockly(tornado.web.Application):
 
 		def put(self, folder, file):
 			file = file.strip('/')
-			print('Saving ' + file)
+			print('[Server] SavesHandler: Saving ' + file)
 			data = self.request.body
 			f = open(os.path.join(folder, file + '.xml'), 'wb')
 			f.write(data)
@@ -147,7 +204,7 @@ class CozmoBlockly(tornado.web.Application):
 			self.args = args
 
 		def get(self, path):
-			path = '../atl-home/' + path
+			path = '../atl-blockly/' + path
 
 			self.render(path + 'index.html')
 
@@ -156,20 +213,35 @@ class CozmoBlockly(tornado.web.Application):
 			self.args = args
 
 		def get(self, path):
-			path = '../cozmo-blockly/' + path
-			loader = tornado.template.Loader(path, whitespace='all')
+			cozmo_blockly_path = '../cozmo-blockly/' + path
+			thymio_blockly_path = '../thymio-blockly/' + path
+
+			loader = tornado.template.Loader(cozmo_blockly_path, whitespace='all')
 			file = 'includes.template'
 			if self.args.dev:
 				file = 'includes_debug.template'
 			t = loader.load(file)
 			includes = t.generate()
 
+			# Modularisation of the toolbox depending on the available robots
+			loader = tornado.template.Loader(cozmo_blockly_path, whitespace='all')
+			file = 'cozmo_blocks.xml'
+			t = loader.load(file)
+			cozmo_blocks = t.generate()
+
+			loader = tornado.template.Loader(thymio_blockly_path, whitespace='all')
+			file = 'thymio_blocks.xml'
+			t = loader.load(file)
+			thymio_blocks = t.generate()
+
 			if self.args.nonsecure:
 				nonsec = 'true'
 			else:
 				nonsec = 'false'
 
-			self.render(path + 'index.html', includes=includes, name=self.args.name, nonsecure=nonsec)
+			print('[Server] HomeHandler: Loading ' + cozmo_blockly_path + ' and ' + thymio_blockly_path)
+
+			self.render(cozmo_blockly_path + 'index.html', includes=includes, cozmo_blocks=cozmo_blocks, thymio_blocks=thymio_blocks, name=self.args.name, nonsecure=nonsec)
 
 
 	def stop(self):
@@ -190,6 +262,8 @@ class CozmoBlockly(tornado.web.Application):
 			(r'/FR/(.+)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../cozmo-blockly')),
 			(r'/static/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler,dict(path='../gallery')),
 			(r'/blockly/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../blockly')),
+			(r'/thymio-blockly/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler,dict(path='../thymio-blockly')),
+			(r'/atl-blockly/(.*)',tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler,dict(path='../atl-blockly')),
 			(r'/closure-library/(.*)', tornado.web.StaticFileHandler if not args.dev else CozmoBlockly.NoCacheStaticFileHandler, dict(path='../closure-library')),
 			(r'/(saves)/(.*)', CozmoBlockly.SavesHandler),
 			(r'/robot/submit', CozmoBlockly.RobotSubmitHandler),
@@ -198,8 +272,13 @@ class CozmoBlockly(tornado.web.Application):
 			(r'/camPub', CozmoBlockly.WSCameraPubHandler),
 			(r'/WsSub', CozmoBlockly.WS3dSubHandler),
 			(r'/WsPub', CozmoBlockly.WS3dPubHandler),
+			(r'/blocksSub', CozmoBlockly.WSBlocksSubHandler),
+			(r'/blocksPub', CozmoBlockly.WSBlocksPubHandler),
+			(r'/consoleSub', CozmoBlockly.WSConsoleSubHandler),
+			(r'/consolePub', CozmoBlockly.WSConsolePubHandler),
 		])
 		cozmoBlockly = app
+
 
 		if not args.nonsecure:
 			try:
@@ -222,8 +301,11 @@ class CozmoBlockly(tornado.web.Application):
 		app._ws3d = None
 
 		app._ioloop = tornado.ioloop.IOLoop.current()
+		print('[Server] Started, awaiting requests...')
+		print('===========================================================================')
 		app._ioloop.start()
 		print('[Server] Server stopped')
+
 
 def main():
 	# listen for SIGINT
@@ -242,6 +324,8 @@ def main():
 	parser.add_argument('--aruco', action="store_true",
 						help="enable Aruco markers detection")
 	args = parser.parse_args()
+
+	print('===========================================================================')
 
 	CozmoBlockly.start(args)
 
