@@ -40,5 +40,6 @@ var MSG = {
   WorkspaceDialogFormSaveCode06: "Filename:",
   catCozmoActuators: "Actuators",
   catDevTools: "Coding tools",
-  catCozmoSensors: "Sensors"
+  catCozmoSensors: "Sensors",
+  catFunStuff: "Fun stuff"
 };
