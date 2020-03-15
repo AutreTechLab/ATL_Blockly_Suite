@@ -67,3 +67,11 @@ Blockly.Python['atl_print'] = function(block) {
   var code = 'print(' + value_atl_print + ')\nbot.consoleLog(' + value_atl_print + ')\n';
   return code;
 };
+
+Blockly.Python['atl_logo'] = function(block) {
+  var checkbox_name = block.getFieldValue('NAME') == 'TRUE';
+  var statements_name = Blockly.Python.statementToCode(block, 'NAME');
+  // TODO: Assemble Python into code variable.
+  var code = '...\n';
+  return code;
+};

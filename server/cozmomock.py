@@ -221,17 +221,13 @@ class CozmoBot:
 		self._wsClient.send(json.dumps(data))
 
 	def highlight(self, block, AtlDebugLevel):
-		data = {
-			'highlight': block
-		}
-	#	self._blocksClient.send(json.dumps(data))
-		print(block, AtlDebugLevel)
 		self._blocksClient.send(block)
 		if AtlDebugLevel == 1:
 			time.sleep(1)
 		if AtlDebugLevel == 2:
 			time.sleep(2)
 		if AtlDebugLevel == 3:
+			print(block, AtlDebugLevel)
 			time.sleep(5)
 
 
