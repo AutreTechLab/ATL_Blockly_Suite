@@ -31,6 +31,7 @@ var MSG = {
   WorkspaceTabPython: "Python",
   WorkspaceTabXml: "XML",
   WorkspaceTabBlocks: "Blocs",
+  WorkspaceTabBlocks: "Console",
   WorkspaceDialogFormSaveCode01: "Ouvrir",
   WorkspaceDialogFormSaveCode02: "Enregistrer",
   WorkspaceDialogFormSaveCode03: "Annuler",
@@ -38,5 +39,6 @@ var MSG = {
   WorkspaceDialogFormSaveCode05: "Enregistrer le code",
   WorkspaceDialogFormSaveCode06: "Nom du fichier:",
   catCozmoActuators: "Actuateurs",
+  catDevTools: "Outils de codage ",
   catCozmoSensors: "Capteurs"
 };

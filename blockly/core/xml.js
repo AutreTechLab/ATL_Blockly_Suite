@@ -465,7 +465,7 @@ Blockly.Xml.domToBlockHeadless_ = function(xmlBlock, workspace) {
       case 'field':
         var field = block.getField(name);
         if (!field) {
-          console.warn('Ignoring non-existent field ' + name + ' in block ' +
+          console.warn('FUS Ignoring non-existent field ' + name + ' in block ' +
                        prototypeName);
           break;
         }
