@@ -69,7 +69,29 @@ Blockly.FieldAngle.OFFSET = 0;
 Blockly.FieldAngle.WRAP = 360;
 
 Blockly.Python.STATEMENT_PREFIX = 'bot.highlight(%1)\n';
+Blockly.Python.STATEMENT_PREFIX = 'bot.highlight(%1)\nprint(AtlDebugLevel)\n' ;
+
 Blockly.Python.addReservedWords('cozmo, robot, bot, tapped_cube');
+// ATL
+Blockly.BlockSvg.prototype.setHighlighted = function(highlighted) {
+  if (!this.rendered) {
+    return;
+  }
+  if (highlighted) {
+    this.addSelect();
+    /*
+    this.svgPath_.setAttribute('filter',
+        'url(#' + this.workspace.options.embossFilterId + ')');
+    this.svgPathLight_.style.display = 'none';
+    */
+  } else {
+    this.removeSelect();
+    /*
+    Blockly.utils.removeAttribute(this.svgPath_, 'filter');
+    delete this.svgPathLight_.style.display;
+    */
+  }
+};
 
 
 var defaultXml =
@@ -227,7 +249,7 @@ Code.LANG = Code.getLang();
  * @private
  */
 // Code.TABS_ = ['blocks', 'javascript', 'php', 'python', 'dart', 'lua', 'xml'];
-Code.TABS_ = ['blocks', 'camera', '3d', 'python', 'xml'];
+Code.TABS_ = ['blocks', 'camera', '3d', 'python', 'xml' ,'console'];
 
 Code.selected = 'blocks';
 
@@ -315,12 +337,38 @@ Code.renderContent = function() {
     content.focus();
   } else if (Code.selected == 'blocks') {
     Code.workspace.setVisible(true);
-    // Code.startHighlighter();
+    var ws = new WebSocket("ws://localhost:9090/blocksSub");
+        ws.onopen = function() {
+        ws.send("Workspace messaage");
+            };
+        ws.onmessage = function (evt) {
+      //      alert(evt.data);
+            Code.workspace.highlightBlock(evt.data);
+        };
   } else if (Code.selected == 'camera') {
     Code.startCamera();
+        var ws = new WebSocket("ws://localhost:9090/consoleSub");
+        ws.onopen = function() {
+        var msg = "<hr>";
+        ws.send(msg);
+            };
+        ws.onmessage = function (evt) {
+        var div = document.getElementById("cozmo_messages");
+        div.innerHTML = evt.data + "<br>" + div.innerHTML;
+    };
   } else if (Code.selected == '3d') {
       Code.cozmo3d.init();
       Code.cozmo3d.start();
+  } else if (Code.selected == 'console') {
+        var ws = new WebSocket("ws://localhost:9090/consoleSub");
+        ws.onopen = function() {
+        ws.send("Console Messages");
+            };
+        ws.onmessage = function (evt) {
+        var div = document.getElementById("console_messages");
+        div.innerHTML = evt.data + "<br>" + div.innerHTML;
+    };
+
   } else if (Code.selected == 'javascript') {
     var code = Blockly.JavaScript.workspaceToCode(Code.workspace);
     renderInnerContent(code, 'js');
@@ -338,6 +386,7 @@ Code.renderContent = function() {
     renderInnerContent(code, 'lua');
   }
 };
+
 
 Code.initDialog = function() {
   var filesElem = $('#files'),
@@ -627,6 +676,7 @@ Code.initLanguage = function() {
   document.getElementById('tab_3d').textContent = MSG['WorkspaceTab3d'];
   document.getElementById('tab_python').textContent = MSG['WorkspaceTabPython'];
   document.getElementById('tab_xml').textContent = MSG['WorkspaceTabXml'];
+  document.getElementById('tab_console').textContent = MSG['WorkspaceTabConsole'];
 
   document.getElementById('linkButton').title = MSG['linkTooltip'];
   document.getElementById('runButton').title = MSG['runTooltip'];
@@ -752,6 +802,31 @@ Code.toggleAnaglyph = function() {
 Code.toggleGrid = function() {
   Code.cozmo3d.toggleGrid();
 }
+
+// ATL Enhancement: console show execution of python code
+
+Code.startConsole = function() {
+
+  Code.console = new cozmoWs();
+
+  Code.console.onMessage = function(msg) {
+ //   Code.drawImageBinary(msg.data, canvas, context);
+  };
+
+  var loc = window.location;
+  var wsurl = 'ws://' + loc.host + '/consoleSub';
+  Code.console.doConnect(wsurl, true);
+}
+
+Code.stopConsole = function() {
+  // Disconnect camera WS.
+  if (Code.console) {
+    Code.console.doDisconnect()
+    Code.console = null;
+  }
+}
+
+// XML Tap automation
 
 Code.sendXmlToUrl = function(urlToSendTo) {
   var xml = Blockly.Xml.workspaceToDom(Code.workspace);

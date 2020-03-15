@@ -69,13 +69,13 @@ call prox.comm.enable(event.args[0])
 
 onevent DriveCM
 call leds.top(0,0,0)
-dist_cm = event.args[0]
+dist_cm = event.args[0] # Distance in cm
 speed = event.args[1]
 v = 20 * speed / 500
 t =  dist_cm / v
 timer.period[0] = (t * 1000)
-motor.left.target = event.args[1]
-motor.right.target = event.args[1]
+motor.left.target = speed
+motor.right.target = speed
 #Max speed = 20cm/s
 
 

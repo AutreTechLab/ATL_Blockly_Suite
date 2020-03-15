@@ -13,7 +13,7 @@ from gi.repository import GLib as glib
 import sys
 import os
 
-class ThymioController(object):
+class ThymioBot(object):
     def __init__(self, filename):
         # init the main loop and sends the ASEBA code to the Thymio bot for the on-robot computations
         dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
@@ -74,13 +74,18 @@ class ThymioController(object):
         proxHorizontal = self.asebaNetwork.GetVariable(
             'thymio-II', 'prox.horizontal')
 
+
+
+        # reschedule scan of joystick
+        glib.timeout_add(20, self.callThymio)
+
+
+    # Requesting Thymio Sensor data
+    def getACCSensorData(self):
         acc = self.asebaNetwork.GetVariable(
             'thymio-II', 'acc')
 
         print("prox.horizontal: " + (', '.join(map(str, proxHorizontal))) + "\t acc: " + (', '.join(map(str, acc))))
-
-        # reschedule scan of joystick
-        glib.timeout_add(20, self.callThymio)
 
 
 def main():
@@ -90,8 +95,8 @@ def main():
         return
 
     # create and run controller
-    thymioController = ThymioController(sys.argv[1])
-    thymioController.run()
+    ThymioBot = ThymioBot(sys.argv[1])
+    ThymioBot.run()
 
 
 if __name__ == '__main__':

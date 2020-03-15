@@ -45,21 +45,6 @@ Blockly.Python['math_angle'] = function(block) {
   return [code, order];
 };
 
-Blockly.Python['cozmo_on_start'] = function(block) {
-  // First, add a 'global' statement for every variable that is not shadowed by
-  // a local parameter.
-  var globals = [];
-  for (var i = 0, varName; varName = block.workspace.variableList[i]; i++) {
-    globals.push(Blockly.Python.variableDB_.getName(varName,
-      Blockly.Variables.NAME_TYPE));
-  }
-  globals = globals.length ? '  global ' + globals.join(', ') + '\n' : '';
-  var branch = Blockly.Python.statementToCode(block, 'BODY');
-  branch = Blockly.Python.addLoopTrap(branch, block.id) ||
-    Blockly.Python.PASS;
-  var code = 'def on_start():\n' + globals + branch + '\n';
-  return code;
-};
 
 Blockly.Python['cozmo_set_cube_model'] = function(block) {
   var model = block.getFieldValue('MODEL');
@@ -173,6 +158,7 @@ Blockly.Python['cozmo_cube_visible_number_boolean'] = function(block) {
   return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
+
 Blockly.Python['cozmo_cube_distance_to'] = function(block) {
   var num = block.getFieldValue('CUBE_NUM');
   var code = "bot.getDistanceToCube(cozmo.objects.LightCube" + num + "Id)";
@@ -257,3 +243,30 @@ function getFloatOrVar(block, fieldName) {
     return value;
   }
 }
+
+// ATL Custom Objects
+
+Blockly.Python['cozmo_object_visible_number_boolean'] = function(block) {
+  var num = block.getFieldValue('OBJECT_NUM');
+  Blockly.Python.definitions_['import_custom_object'] = 'from cozmo.objects import CustomObject, CustomObjectMarkers, CustomObjectTypes';
+  var code = "bot......." + num + "Id)";
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+
+Blockly.Python['cozmo_define_custom_cube'] = function(block) {
+  var dropdown_custom_marker = block.getFieldValue('CUSTOM_MARKER');
+  var dropdown_custom_type = block.getFieldValue('CUSTOM_TYPE');
+  var number_cube_dimension = block.getFieldValue('CUBE_DIMENSION');
+  var number_marker_dimension = block.getFieldValue('MARKER_DIMENSION');
+  Blockly.Python.definitions_['import_custom_object'] = 'from cozmo.objects import CustomObject, CustomObjectMarkers, CustomObjectTypes';
+  // TODO: Assemble Python into code variable.
+  var code = 'bot.defineCustomCube(' + dropdown_custom_type + "," + dropdown_custom_marker + ',' + number_cube_dimension + ',' + number_marker_dimension + ',' + number_marker_dimension + ')\n';
+  return code;
+};
+
+Blockly.Python['cozmo_wait_for_custom_object'] = function(block) {
+  // TODO: Assemble Python into code variable.
+  var code = 'bot.waitForCustonObject()\n';
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};

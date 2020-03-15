@@ -19,7 +19,7 @@
 `SDK_2Triangles.png`    ![SDK_2Triangles.png](SDK_2Triangles.png) 
 
 #### CustomObjectMarkers.Circles3
-`SDK_3Circles.png   ` 
+`SDK_3Circles.png`   ![SDK_3Circles.png](SDK_3Circles.png) 
 
 #### CustomObjectMarkers.Diamonds3
 SDK_3Diamonds.png   ![SDK_3Diamonds.png](SDK_3Diamonds.png) 

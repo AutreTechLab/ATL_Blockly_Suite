@@ -38,7 +38,7 @@ require('../thymio-blockly/js/blockly/python_generator.js');
 //require('../blockly/msg/messages.js');
 require('../blockly/msg/js/en.js'); // fix ATL issue  #10
 
-Blockly.Python.STATEMENT_PREFIX = 'bot.highlight(%1)\n';
+Blockly.Python.STATEMENT_PREFIX = 'bot.highlight(%1, AtlDebugLevel)\n' ;
 
 var express = require('express');
 var bodyParser = require('body-parser')

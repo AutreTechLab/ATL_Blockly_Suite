@@ -29,16 +29,68 @@ goog.provide('Blockly.Blocks.atl');
 
 goog.require('Blockly.Blocks');
 
+Blockly.Blocks['cozmo_on_start'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField(new Blockly.FieldImage("http://localhost:9090/static/ATL-Logo.png", 15, 15, { alt: "*", flipRtl: "FALSE" }))
+        .appendField(Blockly.Msg.COZMO_ON_START_01);
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.COZMO_ON_START_03)
+        .appendField(new Blockly.FieldDropdown([["0",'0'], ["1",'1'], ["2",'2'], ["3",'3']]), "DEBUG_LEVEL");
+    this.appendStatementInput("BODY");
+    this.setColour(Blockly.Blocks.cozmo.HUE2);
+    this.setTooltip(Blockly.Msg.COZMO_ON_START_02);
+  }
+};
+
+Blockly.Blocks['atl_shuffle_the_list'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("http://localhost:9090/static/ATL-Logo.png", 15, 15, { alt: "*", flipRtl: "FALSE" }));
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.ATL_SHUFFLE_THE_LIST_01);
+    this.appendValueInput("ATL_LIST")
+        .setCheck(null);
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(330);
+ this.setTooltip(Blockly.Msg.ATL_SHUFFLE_THE_LIST_02);
+ this.setHelpUrl("");
+  }
+};
+
+
 Blockly.Blocks['atl_comment'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("ATL_COMMENT_IN_CODE");
+        .appendField(new Blockly.FieldImage("http://localhost:9090/static/ATL-Logo.png", 15, 15, { alt: "*", flipRtl: "FALSE" }));
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.ATL_COMMENT_01);
     this.appendValueInput("ATL_COMMENT_IN_CODE_TEXT")
         .setCheck("String");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
- this.setTooltip("");
+ this.setTooltip(Blockly.Msg.ATL_COMMENT_02);
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['atl_print'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("http://localhost:9090/static/ATL-Logo.png", 15, 15, { alt: "*", flipRtl: "FALSE" }));
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.ATL_PRINT_01);
+    this.appendValueInput("ATL_PRINT")
+        .setCheck(null);
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(330);
+ this.setTooltip(Blockly.Msg.ATL_PRINT_02);
  this.setHelpUrl("");
   }
 };

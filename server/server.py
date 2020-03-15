@@ -7,6 +7,9 @@ try:
 	import tornado.template
 	from tornado import locks, gen
 	from tornado.platform.asyncio import AsyncIOMainLoop
+	from tornado import gen
+	from tornado.options import options, define
+	from tornado.queues import Queue
 except ImportError:
 	sys.exit("Cannot import Tornado: Do `pip3 install --user tornado` to install")
 
@@ -35,6 +38,60 @@ def signal_handler(signal, frame):
 	exit(0)
 
 class CozmoBlockly(tornado.web.Application):
+
+	class WSBlocksSubHandler(tornado.websocket.WebSocketHandler):
+		def open(self):
+			print('[Server] WSBlocksSub client connected')
+			self.application._blocks = self
+
+		def on_close(self):
+			print('[Server] WSBlocksSub client disconnected')
+
+		def on_message(self, message):
+			print('[Server] WSBlocksSub client message: ' + message)
+			# echo message back to client
+			self.write_message(message)
+
+	class WSBlocksPubHandler(tornado.websocket.WebSocketHandler):
+		def open(self):
+			print('[Server]  WSBlocksSPub Handler client connected')
+
+		def on_message(self, message):
+			try:
+				if self.application._blocks:
+					self.application._blocks.write_message(message)
+			except Exception:
+				pass
+
+		def on_close(self):
+			print('[Server]  WSConsolePub client disconnected')
+
+	class WSConsoleSubHandler(tornado.websocket.WebSocketHandler):
+		def open(self):
+			print('[Server] WSConsoleSub client connected')
+			self.application._console = self
+
+		def on_close(self):
+			print('[Server] WSConsoleSub client disconnected')
+
+		def on_message(self, message):
+			print('[Server] WSConsoleSub client message: ' + message)
+			# echo message back to client
+			self.write_message(message)
+
+	class WSConsolePubHandler(tornado.websocket.WebSocketHandler):
+		def open(self):
+			print('[Server]  WSConsolePub client connected')
+
+		def on_message(self, message):
+			try:
+				if self.application._console:
+					self.application._console.write_message(message)
+			except Exception:
+				pass
+
+		def on_close(self):
+			print('[Server]  WSConsolePub client disconnected')
 
 	class WS3dSubHandler(tornado.websocket.WebSocketHandler):
 		def open(self):
@@ -215,8 +272,13 @@ class CozmoBlockly(tornado.web.Application):
 			(r'/camPub', CozmoBlockly.WSCameraPubHandler),
 			(r'/WsSub', CozmoBlockly.WS3dSubHandler),
 			(r'/WsPub', CozmoBlockly.WS3dPubHandler),
+			(r'/blocksSub', CozmoBlockly.WSBlocksSubHandler),
+			(r'/blocksPub', CozmoBlockly.WSBlocksPubHandler),
+			(r'/consoleSub', CozmoBlockly.WSConsoleSubHandler),
+			(r'/consolePub', CozmoBlockly.WSConsolePubHandler),
 		])
 		cozmoBlockly = app
+
 
 		if not args.nonsecure:
 			try:
@@ -239,8 +301,11 @@ class CozmoBlockly(tornado.web.Application):
 		app._ws3d = None
 
 		app._ioloop = tornado.ioloop.IOLoop.current()
+		print('[Server] Started, awaiting requests...')
+		print('===========================================================================')
 		app._ioloop.start()
 		print('[Server] Server stopped')
+
 
 def main():
 	# listen for SIGINT
@@ -259,6 +324,8 @@ def main():
 	parser.add_argument('--aruco', action="store_true",
 						help="enable Aruco markers detection")
 	args = parser.parse_args()
+
+	print('===========================================================================')
 
 	CozmoBlockly.start(args)
 

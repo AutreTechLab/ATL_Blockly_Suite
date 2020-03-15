@@ -1,4 +1,4 @@
-import cozmo
+import cozmo #Cozmo SDK
 from cozmo.util import degrees, radians, distance_mm, speed_mmps, Position, Pose, Rotation
 import time
 import threading
@@ -6,6 +6,7 @@ import math
 import quaternion
 import io
 import json
+from cozmo.objects import CustomObject, CustomObjectMarkers, CustomObjectTypes
 
 animations = {
 	"GREETING": cozmo.anim.Triggers.AcknowledgeFaceNamed,
@@ -40,6 +41,8 @@ class CozmoBot:
 		self._dataPubThread = None
 		self._camClient = None
 		self._wsClient = None
+		self._consoleClient = None
+		self._blocksClient = None
 		self._aruco = aruco
 
 	def start(self, code):
@@ -67,6 +70,12 @@ class CozmoBot:
 		self._wsClient = WebSocketClient('ws://localhost:9090/WsPub')
 		self._wsClient.connect()
 
+		self._consoleClient = WebSocketClient('ws://localhost:9090/consolePub')
+		self._consoleClient.connect()
+
+		self._blocksClient = WebSocketClient('ws://localhost:9090/blocksPub')
+		self._blocksClient.connect()
+
 		self._dataPubThread = threading.Thread(target=self.feedRobotDataInThread)
 		self._dataPubThread.daemon = True
 		self._dataPubThread.start()
@@ -75,6 +84,9 @@ class CozmoBot:
 		cozmo.robot.Robot.drive_off_charger_on_connect = False
 		cozmo.connect(run)
 		self._robot = None
+
+	def consoleLog(self, msgdata):
+		self._consoleClient.send(msgdata)
 
 	def feedRobotDataInThread(self):
 		print('Starting data feed')
@@ -264,7 +276,9 @@ class CozmoBot:
 		return res.state == cozmo.action.ACTION_SUCCEEDED
 
 	def say(self, text):
+		text =str(text) # fix issue #11
 		print("[Bot] Executing Say: " + text)
+		self.consoleLog(text)
 		res = self._robot.say_text(text).wait_for_completed()
 		print("[Bot] Say finished")
 		return res.state == cozmo.action.ACTION_SUCCEEDED
@@ -370,5 +384,106 @@ class CozmoBot:
 		data = {
 			'highlight': block
 		}
-		self._wsClient.send(json.dumps(data))
+		# print(block)
+		self._blocksClient.send(block)
 
+	#############################################################################################################
+	# ATL: Add function for custom Object processing
+	#  waitForCustonObject()
+	# defineCustomCube(<edge in mm>,
+	# defineCustomWall(
+
+
+
+	def handle_object_appeared(evt, **kw):
+		# This will be called whenever an EvtObjectAppeared is dispatched -
+		# whenever an Object comes into view.
+		if isinstance(evt.obj, CustomObject):
+			print("[Bot] Cozmo started seeing a %s" % str(evt.obj.object_type))
+
+	def handle_object_disappeared(evt, **kw):
+		# This will be called whenever an EvtObjectDisappeared is dispatched -
+		# whenever an Object goes out of view.
+		if isinstance(evt.obj, CustomObject):
+			print("[Bot] Cozmo stopped seeing a %s" % str(evt.obj.object_type))
+
+	def waitForCustonObject(self):
+		print("[Bot] Waiting for custom Object")
+		return str(self._robot.world.wait_for(cozmo.objects.EvtObjectAppeared, timeout=None).obj.object_type)
+
+
+	def defineCustomCube(self, CustomObjectType, CustomObjectMarker, x, md1, md2 ):
+		# Add event handlers for whenever Cozmo sees a new object
+		self._robot.add_event_handler(cozmo.objects.EvtObjectAppeared, CozmoBot.handle_object_appeared)
+		self._robot.add_event_handler(cozmo.objects.EvtObjectDisappeared, CozmoBot.handle_object_disappeared)
+
+		# define a unique cube (44mm x 44mm x 44mm) (approximately the same size as a light cube)
+		# with a 30mm x 30mm Diamonds2 image on every face
+		cube_obj = self._robot.world.define_custom_cube(CustomObjectType,
+												  CustomObjectMarker,
+												  x,
+												  md1, md2, True)
+
+		if (cube_obj is not None):
+			print("[Bot] Cube object defined successfully! ")
+		else:
+			print("[Bot] Cube object definition failed!")
+			return
+
+		print("Show the " + str(CustomObjectMarker) + " to Cozmo and you will see the related objects "
+			  "annotated in Cozmo's view window, you will also see print messages "
+			  "everytime a custom object enters or exits Cozmo's view.")
+
+########################################################################################################
+# Below code is not yet active. Only custom Cube is awailable via Blockly workspace
+
+	def defineCustomWall(robot: cozmo.robot.Robot):
+		# Add event handlers for whenever Cozmo sees a new object
+		robot.add_event_handler(cozmo.objects.EvtObjectAppeared, handle_object_appeared)
+		robot.add_event_handler(cozmo.objects.EvtObjectDisappeared, handle_object_disappeared)
+
+		# define a unique wall (150mm x 120mm (x10mm thick for all walls)
+		# with a 50mm x 30mm Circles2 image on front and back
+		wall_obj = robot.world.define_custom_wall(CustomObjectTypes.CustomType02,
+												  CustomObjectMarkers.Circles2,
+												  150, 120,
+												  50, 30, True)
+
+		if ((cube_obj is not None) and (big_cube_obj is not None) and
+				(wall_obj is not None) and (box_obj is not None)):
+			print("All objects defined successfully!")
+		else:
+			print("One or more object definitions failed!")
+			return
+
+		print("Show the " + CustomObjectMarker + " to Cozmo and you will see the related objects "
+			  "annotated in Cozmo's view window, you will also see print messages "
+			  "everytime a custom object enters or exits Cozmo's view.")
+
+	def defineCustomBox(robot: cozmo.robot.Robot):
+		# Add event handlers for whenever Cozmo sees a new object
+		robot.add_event_handler(cozmo.objects.EvtObjectAppeared, handle_object_appeared)
+		robot.add_event_handler(cozmo.objects.EvtObjectDisappeared, handle_object_disappeared)
+
+		# define a unique box (60mm deep x 140mm width x100mm tall)
+		# with a different 30mm x 50mm image on each of the 6 faces
+		box_obj = robot.world.define_custom_box(CustomObjectTypes.CustomType03,
+												CustomObjectMarkers.Hexagons2,  # front
+												CustomObjectMarkers.Circles3,  # back
+												CustomObjectMarkers.Circles4,  # top
+												CustomObjectMarkers.Circles5,  # bottom
+												CustomObjectMarkers.Triangles2,  # left
+												CustomObjectMarkers.Triangles3,  # right
+												60, 140, 100,
+												30, 50, True)
+
+		if ((cube_obj is not None) and (big_cube_obj is not None) and
+				(wall_obj is not None) and (box_obj is not None)):
+			print("All objects defined successfully!")
+		else:
+			print("One or more object definitions failed!")
+			return
+
+		print("Show the above markers to Cozmo and you will see the related objects "
+			  "annotated in Cozmo's view window, you will also see print messages "
+			  "everytime a custom object enters or exits Cozmo's view.")

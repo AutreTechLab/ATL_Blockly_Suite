@@ -36,7 +36,7 @@
   <script src="../thymio-blockly/js/blockly/python_generator.js"></script>
 
   <!-- ALT Comment:
-  After execution, the language code defined as Code.LANG
+  After execution, the language code is defined as Code.LANG
   The ATL language strings are activated at the end of teh code.js file.
   -->
 
@@ -66,13 +66,15 @@
           <tr id="tabRow" height="1em">
             <td id="tab_blocks" class="tabon">...</td>
             <td class="tabmin">&nbsp;</td>
-            <td id="tab_camera" class="taboff">Camrra</td>
+            <td id="tab_camera" class="taboff">Camera</td>
             <td class="tabmin">&nbsp;</td>
             <td id="tab_3d" class="taboff">3D</td>
             <td class="tabmin">&nbsp;</td>
             <td id="tab_python" class="taboff">Python</td>
             <td class="tabmin">&nbsp;</td>
             <td id="tab_xml" class="taboff">XML</td>
+            <td class="tabmin">&nbsp;</td>
+            <td id="tab_console" class="taboff">Console</td>
             <td class="tabmax">
               <button id="stopButton" class="button" style="font-size: 1em; height: 25px; vertical-align: top;">
                 <i class="fa fa-stop" style="opacity: 0.6;"></i>
@@ -103,6 +105,7 @@
   <div id="content_camera" class="content">
     <img id="img_cam" lazyload style="padding-right: 30px;" />
     <canvas id="canvas_cam" width="320" height="240" style="border:1px solid #000000;"></canvas>
+    <div id="cozmo_messages"></div>
   </div>
   <div id="content_3d" class="content">
     <div style="position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.5); padding: 5px;">
@@ -119,6 +122,9 @@
   <pre id="content_lua" class="content"></pre>
   <pre id="content_dart" class="content"></pre>
   <textarea id="content_xml" class="content" wrap="off"></textarea>
+  <pre id="content_console" class="content" wrap="off">
+    <div id="console_messages"></div>
+  </pre>
 
 <!-- TOOLBOX Menu -->
 
@@ -377,46 +383,6 @@
       </block>
       <block type="lists_sort"></block>
     </category>
-<!--
-     <category name="{catColour}" colour="20">
-      <block type="colour_picker"></block>
-      <block type="colour_random"></block>
-      <block type="colour_rgb">
-        <value name="RED">
-          <shadow type="math_number">
-            <field name="NUM">100</field>
-          </shadow>
-        </value>
-        <value name="GREEN">
-          <shadow type="math_number">
-            <field name="NUM">50</field>
-          </shadow>
-        </value>
-        <value name="BLUE">
-          <shadow type="math_number">
-            <field name="NUM">0</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="colour_blend">
-        <value name="COLOUR1">
-          <shadow type="colour_picker">
-            <field name="COLOUR">#ff0000</field>
-          </shadow>
-        </value>
-        <value name="COLOUR2">
-          <shadow type="colour_picker">
-            <field name="COLOUR">#3333ff</field>
-          </shadow>
-        </value>
-        <value name="RATIO">
-          <shadow type="math_number">
-            <field name="NUM">0.5</field>
-          </shadow>
-        </value>
-      </block>
-    </category>
-    -->
     <sep></sep>
     <category name="{catVariables}" colour="330" custom="VARIABLE">
       <block type="variable">
@@ -425,20 +391,19 @@
     </category>
     <category name="{catFunctions}" colour="290" custom="PROCEDURE"></category>
     <sep></sep>
-    <!-- Start of THYMIO related Blocks-->
-    {% raw thymio_blocks %}
+    <category name="{catDevTools}" colour="210">
+      <block type="cozmo_on_start"> </block>
+      <block type="atl_shuffle_the_list"> </block>
+      <block type="atl_comment"></block>
+      <block type="atl_print"></block>
+    </category>
+    <sep></sep>
     <!-- Includes Cozmo block -->
     {% raw cozmo_blocks %}
-      <category name="{devTools}" colour="210">
-      <block type="atl_comment"></block>
-      <block type=".."></block>
-      <block type=".."></block>
-      <block type=".."></block>
-      <block type=".."></block>
-      <block type=".."></block>
-      <block type=".."></block>
-    </category>
+    <!-- Start of THYMIO related Blocks-->
+    {% raw thymio_blocks %}
   </xml>
+
 
 </body>
 </html>
