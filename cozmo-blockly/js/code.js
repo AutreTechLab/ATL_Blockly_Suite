@@ -349,14 +349,14 @@ Code.renderContent = function() {
         };
   } else if (Code.selected == 'camera') {
     Code.startCamera();
-        var parsedUrl = new URL(window.location.href);
-        var atlhost = parsedUrl.hostname;
-        var ws = new WebSocket("ws://" + atlhost + ":9090/consoleSub");
-        ws.onopen = function() {
+    var parsedUrl = new URL(window.location.href);
+    var atlhost = parsedUrl.hostname;
+    var ws = new WebSocket("ws://" + atlhost + ":9090/cozmo_messagesSub");
+    ws.onopen = function() {
         var msg = "<hr>";
         ws.send(msg);
             };
-        ws.onmessage = function (evt) {
+    ws.onmessage = function (evt) {
         var div = document.getElementById("cozmo_messages");
         div.innerHTML = evt.data + "<br>" + div.innerHTML;
     };

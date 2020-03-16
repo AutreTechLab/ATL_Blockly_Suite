@@ -93,6 +93,37 @@ class CozmoBlockly(tornado.web.Application):
 		def on_close(self):
 			print('[Server]  WSConsolePub client disconnected')
 
+	# Websocket communication to Cozmo camera tab so that we call follow what Cozmo sees and does
+
+	class WSCozmo_messagesSubHandler(tornado.websocket.WebSocketHandler):
+		def open(self):
+			print('[Server] WSCozmo_messagesSub client connected')
+			self.application._cozmo_messages = self
+
+		def on_close(self):
+			print('[Server] WSCozmo_messagesSub client disconnected')
+
+		def on_message(self, message):
+			print('[Server] WSCozmo_messagesSub client message: ' + message)
+			# echo message back to client
+			self.write_message(message)
+
+	class WSCozmo_messagesPubHandler(tornado.websocket.WebSocketHandler):
+		def open(self):
+			print('[Server]  WSCozmo_messagesPub client connected')
+
+		def on_message(self, message):
+			try:
+				if self.application._cozmo_messages:
+					self.application._cozmo_messages.write_message(message)
+			except Exception:
+				pass
+
+		def on_close(self):
+			print('[Server]  WSCozmo_messagesPub client disconnected')
+
+	# Websocket communicatio to Cozmo 3D tab
+
 	class WS3dSubHandler(tornado.websocket.WebSocketHandler):
 		def open(self):
 			print('[Server] 3dSub client connected')
@@ -276,6 +307,8 @@ class CozmoBlockly(tornado.web.Application):
 			(r'/blocksPub', CozmoBlockly.WSBlocksPubHandler),
 			(r'/consoleSub', CozmoBlockly.WSConsoleSubHandler),
 			(r'/consolePub', CozmoBlockly.WSConsolePubHandler),
+			(r'/cozmo_messagesSub', CozmoBlockly.WSCozmo_messagesSubHandler),
+			(r'/cozmo_messagesPub', CozmoBlockly.WSCozmo_messagesPubHandler),
 		])
 		cozmoBlockly = app
 
