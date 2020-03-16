@@ -73,6 +73,9 @@ class CozmoBot:
 		self._consoleClient = WebSocketClient('ws://localhost:9090/consolePub')
 		self._consoleClient.connect()
 
+		self._cozmo_messagesClient = WebSocketClient('ws://localhost:9090/cozmo_messagesPub')
+		self._cozmo_messagesClient.connect()
+
 		self._blocksClient = WebSocketClient('ws://localhost:9090/blocksPub')
 		self._blocksClient.connect()
 
@@ -87,6 +90,9 @@ class CozmoBot:
 
 	def consoleLog(self, msgdata):
 		self._consoleClient.send(msgdata)
+
+	def cozmo_messagesLog(self, msgdata):
+		self._cozmo_messagesClient.send(msgdata)
 
 	def feedRobotDataInThread(self):
 		print('Starting data feed')
@@ -278,7 +284,7 @@ class CozmoBot:
 	def say(self, text):
 		text =str(text) # fix issue #11
 		print("[Bot] Executing Say: " + text)
-		self.consoleLog(text)
+		self.cozmo_messagesLog(text)
 		res = self._robot.say_text(text).wait_for_completed()
 		print("[Bot] Say finished")
 		return res.state == cozmo.action.ACTION_SUCCEEDED
