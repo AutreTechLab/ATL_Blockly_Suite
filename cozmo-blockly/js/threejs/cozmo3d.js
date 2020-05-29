@@ -181,7 +181,7 @@ class Crate extends Dynamic {
     this.mesh = new THREE.Mesh( cubeGeometry, cubeMaterial );
 
     // var geometry = new THREE.EdgesGeometry( this.mesh.geometry );
-    // var material = new THREE.LineBasicMaterial( { color: 0x00ff000, linewidth: 5 } );
+    // var material = new THREE.Li/home/autretechlab/Documents/ATL_Blockly_SuiteneBasicMaterial( { color: 0x00ff000, linewidth: 5 } );
     // var edges = new THREE.LineSegments( geometry, material );
     // this.mesh.add( edges );
 

@@ -38,7 +38,8 @@ var MSG = {
   WorkspaceDialogFormSaveCode04: "Are you sure you want to overwrite ",
   WorkspaceDialogFormSaveCode05: "Save code",
   WorkspaceDialogFormSaveCode06: "Filename:",
-  catCozmoActuators: "Actuators",
+  catCozmoActuatorsBasic: "Basic activities",
+  catCozmoActuatorsAdvanced: "Advanced Actions",
   catDevTools: "Coding tools",
   catCozmoSensors: "Sensors",
   catFunStuff: "Fun stuff"

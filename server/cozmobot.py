@@ -207,6 +207,14 @@ class CozmoBot:
 		else:
 			return False
 
+	def setCubeLight(self, cube_light, cube_num):
+		cube = self._robot.world.get_light_cube(cube_num)
+
+		if cube is not None:
+			cube.set_lights(cozmo.lights.green_light)
+		else:
+			print("[CozmoBot] Cozmo is not connected to cube number " + str(cube_num) + " - check the battery.")
+
 	def getDistanceToCube(self, cube_num):
 		'''
 		Returns the distance to the cube if it has been seen since the program start, or 100000 otherwise.
@@ -236,7 +244,7 @@ class CozmoBot:
 		'''
 		# Ignore if cube has not been observed yet.
 		if not self.getCubeSeen(cube_num):
-			print("[Bot] Ignoring pickupCube() as the cube has not been observed yet")
+			print("[CozmoBot] Ignoring pickupCube() as the cube has not been observed yet")
 			return False
 		cube = self._robot.world.light_cubes[cube_num]
 		# res = self._robot.pickup_object(cube).wait_for_completed()
@@ -250,7 +258,7 @@ class CozmoBot:
 
 	def placeCubeOnGround(self, cube_num):
 		if not self.getCubeSeen(cube_num):
-			print("[Bot] Ignoring placeCubeOnGround() as the cube has not been observed yet")
+			print("[CozmoBot] Ignoring placeCubeOnGround() as the cube has not been observed yet")
 			return False
 		cube = self._robot.world.light_cubes[cube_num]
 		res = self._robot.place_object_on_ground_here(cube).wait_for_completed()
@@ -261,9 +269,9 @@ class CozmoBot:
 		Another unreliable action.
 		'''
 		if not self.getCubeSeen(other_cube_num):
-			print("[Bot] Ignoring placeCubeOnCube() as the cube has not been observed yet")
+			print("[CozmoBot] Ignoring placeCubeOnCube() as the cube has not been observed yet")
 			return False
-		print("[Bot] Executing placeCubeOnCube()")
+		print("[CozmoBot] Executing placeCubeOnCube()")
 		cube = self._robot.world.light_cubes[other_cube_num]
 		# while res == None or (res.state == cozmo.action.ACTION_FAILED and res.failure_code in ["repeat", "aborted"]):
 		# 	res = self._robot.go_to_object(cube, distance_mm(100)).wait_for_completed()
@@ -274,7 +282,7 @@ class CozmoBot:
 		while res == None or (res.state == cozmo.action.ACTION_FAILED and res.failure_code in ["repeat", "aborted"]):
 			res = self._robot.place_on_object(cube).wait_for_completed()
 			print(res)
-		print("[Bot] placeCubeOnCube() finished")
+		print("[CozmoBot] placeCubeOnCube() finished")
 		return res.state == cozmo.action.ACTION_SUCCEEDED
 
 	def gotoOrigin(self):
@@ -283,71 +291,75 @@ class CozmoBot:
 
 	def say(self, text):
 		text =str(text) # fix issue #11
-		print("[Bot] Executing Say: " + text)
+		print("[CozmoBot] Executing Say: " + text)
 		self.cozmo_messagesLog(text)
 		res = self._robot.say_text(text).wait_for_completed()
-		print("[Bot] Say finished")
+		print("[CozmoBot] Say finished")
 		return res.state == cozmo.action.ACTION_SUCCEEDED
 
 	def enableFreeWill(self, enable):
-		print("[Bot] Executing enableFreeWill(" + str(enable) + ")")
+		print("[CozmoBot] Executing enableFreeWill(" + str(enable) + ")")
 		if enable:
 			self._robot.start_freeplay_behaviors()
 		else:
 			self._robot.stop_freeplay_behaviors()
 
 	def stop(self):
-		print("[Bot] Executing stop")
+		print("[CozmoBot] Executing stop")
 		self._robot.stop_all_motors()
 
 	def delay(self, seconds):
 		'''
 		seconds - can be float for fractions of a second
 		'''
-		# print("[Bot] Executing delay " + str(seconds))
+		# print("[CozmoBot] Executing delay " + str(seconds))
 		time.sleep(seconds)
 
+	def setBackpackLights(self, backpack_light):
+		self._robot.set_all_backpack_lights(backpack_light)
+
+
 	def turn(self, angle):
-		print("[Bot] Executing turn " + str(angle))
+		print("[CozmoBot] Executing turn " + str(angle))
 		res = self._robot.turn_in_place(degrees(angle)).wait_for_completed()
-		print("[Bot] turn finished")
+		print("[CozmoBot] turn finished")
 		return res.state == cozmo.action.ACTION_SUCCEEDED
 
 	def turnTowardCube(self, cube_num):
 		if not self.getCubeSeen(cube_num):
-			print("[Bot] Ignoring turnTowardCube() as the cube has not been observed yet")
+			print("[CozmoBot] Ignoring turnTowardCube() as the cube has not been observed yet")
 			return False
-		print("[Bot] Executing turn toward cube")
+		print("[CozmoBot] Executing turn toward cube")
 		cube = self._robot.world.light_cubes[cube_num]
 		pos = self._robot.pose.position - cube.pose.position
 		angle = radians(math.atan2(pos.y, pos.x) - math.pi) - self._robot.pose.rotation.angle_z
 		res = self._robot.turn_in_place(angle).wait_for_completed()
-		print("[Bot] turn finished")
+		print("[CozmoBot] turn finished")
 		return res.state == cozmo.action.ACTION_SUCCEEDED
 
 	def driveDistanceWithSpeed(self, distance, speed):
-		print("[Bot] Executing driveDistanceSpeed(" + str(distance) + ", " + str(speed) + ")")
+		print("[CozmoBot] Executing driveDistanceSpeed(" + str(distance) + ", " + str(speed) + ")")
 		res = self._robot.drive_straight(distance_mm(distance * 10), speed_mmps(speed * 10)).wait_for_completed()
-		print("[Bot] driveDistanceSpeed finished")
+		print("[CozmoBot] driveDistanceSpeed finished")
 		return res.state == cozmo.action.ACTION_SUCCEEDED
 
 	def driveWheelsWithSpeed(self, lSpeed, rSpeed):
-		print("[Bot] Executing driveWheelsWithSpeed(" + str(lSpeed) + ", " + str(rSpeed) + ")")
+		print("[CozmoBot] Executing driveWheelsWithSpeed(" + str(lSpeed) + ", " + str(rSpeed) + ")")
 		self._robot.drive_wheels(lSpeed * 10, rSpeed * 10)
 
 	def driveTo(self, x, y):
-		print("[Bot] Executing driveTo(" + str(x) + ", " + str(y) + ")")
+		print("[CozmoBot] Executing driveTo(" + str(x) + ", " + str(y) + ")")
 		pose = Pose(x * 10, y * 10, 0, angle_z=self._robot.pose.rotation.angle_z)
 		res = self._robot.go_to_pose(self._origin.define_pose_relative_this(pose)).wait_for_completed()
-		print("[Bot] driveTo finished")
+		print("[CozmoBot] driveTo finished")
 		return res.state == cozmo.action.ACTION_SUCCEEDED
 
 	def waitForTap(self):
-		print("[Bot] Executing waitForTap()")
+		print("[CozmoBot] Executing waitForTap()")
 		return self._robot.world.wait_for(cozmo.objects.EvtObjectTapped, timeout=None).obj
 
 	def addStaticObject(self, model, x1, y1, x2, y2, depth, height):
-		print("[Bot] Executing addStaticObject({},{},{},{},{},{})".format(x1, y1, x2, y2, depth, height))
+		print("[CozmoBot] Executing addStaticObject({},{},{},{},{},{})".format(x1, y1, x2, y2, depth, height))
 
 		data = {
 			'addStaticObject': {
@@ -386,12 +398,16 @@ class CozmoBot:
 		}
 		self._wsClient.send(json.dumps(data))
 
-	def highlight(self, block):
-		data = {
-			'highlight': block
-		}
-		# print(block)
+	def highlight(self, block, AtlDebugLevel):
 		self._blocksClient.send(block)
+		if AtlDebugLevel == 1:
+			time.sleep(1)
+		if AtlDebugLevel == 2:
+			time.sleep(2)
+		if AtlDebugLevel == 3:
+			print(block, AtlDebugLevel)
+			time.sleep(5)
+
 
 	#############################################################################################################
 	# ATL: Add function for custom Object processing
@@ -405,18 +421,21 @@ class CozmoBot:
 		# This will be called whenever an EvtObjectAppeared is dispatched -
 		# whenever an Object comes into view.
 		if isinstance(evt.obj, CustomObject):
-			print("[Bot] Cozmo started seeing a %s" % str(evt.obj.object_type))
+			print("[CozmoBot] Cozmo started seeing a %s" % str(evt.obj.object_type))
 
 	def handle_object_disappeared(evt, **kw):
 		# This will be called whenever an EvtObjectDisappeared is dispatched -
 		# whenever an Object goes out of view.
 		if isinstance(evt.obj, CustomObject):
-			print("[Bot] Cozmo stopped seeing a %s" % str(evt.obj.object_type))
+			print("[CozmoBot] Cozmo stopped seeing a %s" % str(evt.obj.object_type))
 
-	def waitForCustonObject(self):
-		print("[Bot] Waiting for custom Object")
+	def waitForCustomObject(self):
+		print("[CozmoBot] Waiting for custom Object")
 		return str(self._robot.world.wait_for(cozmo.objects.EvtObjectAppeared, timeout=None).obj.object_type)
 
+	def waitForCustomMarker(self):
+		print("[CozmoBot] Waiting for custom Marker")
+		return str(self._robot.world.wait_for(cozmo.objects.EvtObjectAppeared, timeout=None).obj.object_type)
 
 	def defineCustomCube(self, CustomObjectType, CustomObjectMarker, x, md1, md2 ):
 		# Add event handlers for whenever Cozmo sees a new object
@@ -431,65 +450,48 @@ class CozmoBot:
 												  md1, md2, True)
 
 		if (cube_obj is not None):
-			print("[Bot] Cube object defined successfully! ")
+			print("[CozmoBot] Cube object defined successfully! ")
 		else:
-			print("[Bot] Cube object definition failed!")
+			print("[CozmoBot] Cube object definition failed!")
 			return
 
-		print("Show the " + str(CustomObjectMarker) + " to Cozmo and you will see the related objects "
-			  "annotated in Cozmo's view window, you will also see print messages "
-			  "everytime a custom object enters or exits Cozmo's view.")
-
-########################################################################################################
-# Below code is not yet active. Only custom Cube is awailable via Blockly workspace
-
-	def defineCustomWall(robot: cozmo.robot.Robot):
+	def defineCustomWall(self, CustomObjectType, CustomObjectMarker, x, y, md1, md2 ):
 		# Add event handlers for whenever Cozmo sees a new object
-		robot.add_event_handler(cozmo.objects.EvtObjectAppeared, handle_object_appeared)
-		robot.add_event_handler(cozmo.objects.EvtObjectDisappeared, handle_object_disappeared)
+		self._robot.add_event_handler(cozmo.objects.EvtObjectAppeared, CozmoBot.handle_object_appeared)
+		self._robot.add_event_handler(cozmo.objects.EvtObjectDisappeared, CozmoBot.handle_object_disappeared)
 
 		# define a unique wall (150mm x 120mm (x10mm thick for all walls)
 		# with a 50mm x 30mm Circles2 image on front and back
-		wall_obj = robot.world.define_custom_wall(CustomObjectTypes.CustomType02,
-												  CustomObjectMarkers.Circles2,
-												  150, 120,
-												  50, 30, True)
+		wall_obj = self._robot.world.define_custom_wall(CustomObjectType,
+												  CustomObjectMarker,
+												  x, y,
+												  md1, md2, True)
 
-		if ((cube_obj is not None) and (big_cube_obj is not None) and
-				(wall_obj is not None) and (box_obj is not None)):
-			print("All objects defined successfully!")
+		if (wall_obj is not None):
+			print("[CozmoBot] Wall object defined successfully!")
 		else:
-			print("One or more object definitions failed!")
+			print("[CozmoBot] Wall object definition failed!")
 			return
 
-		print("Show the " + CustomObjectMarker + " to Cozmo and you will see the related objects "
-			  "annotated in Cozmo's view window, you will also see print messages "
-			  "everytime a custom object enters or exits Cozmo's view.")
-
-	def defineCustomBox(robot: cozmo.robot.Robot):
+	def defineCustomBox(self, CustomObjectType, CustomObjectMarkers_front, CustomObjectMarkers_back, CustomObjectMarkers_top, CustomObjectMarkers_bottom, CustomObjectMarkers_left, CustomObjectMarkers_right, x, y, z, md1, md2 ):
 		# Add event handlers for whenever Cozmo sees a new object
-		robot.add_event_handler(cozmo.objects.EvtObjectAppeared, handle_object_appeared)
-		robot.add_event_handler(cozmo.objects.EvtObjectDisappeared, handle_object_disappeared)
+		self._robot.add_event_handler(cozmo.objects.EvtObjectAppeared, CozmoBot.handle_object_appeared)
+		self._robot.add_event_handler(cozmo.objects.EvtObjectDisappeared, CozmoBot.handle_object_disappeared)
 
 		# define a unique box (60mm deep x 140mm width x100mm tall)
 		# with a different 30mm x 50mm image on each of the 6 faces
-		box_obj = robot.world.define_custom_box(CustomObjectTypes.CustomType03,
-												CustomObjectMarkers.Hexagons2,  # front
-												CustomObjectMarkers.Circles3,  # back
-												CustomObjectMarkers.Circles4,  # top
-												CustomObjectMarkers.Circles5,  # bottom
-												CustomObjectMarkers.Triangles2,  # left
-												CustomObjectMarkers.Triangles3,  # right
-												60, 140, 100,
-												30, 50, True)
+		box_obj = self._robot.world.define_custom_box(CustomObjectType,
+												CustomObjectMarkers_front,  # _front
+												CustomObjectMarkers_back,  # _back
+												CustomObjectMarkers_top,  # _top
+												CustomObjectMarkers_bottom,  # _bottom
+												CustomObjectMarkers_left,  # _left
+												CustomObjectMarkers_right,  # _right
+												x, y, z,
+												md1, md2, True)
 
-		if ((cube_obj is not None) and (big_cube_obj is not None) and
-				(wall_obj is not None) and (box_obj is not None)):
-			print("All objects defined successfully!")
+		if (box_obj is not None):
+			print("[CozmoBot] Box object defined successfully!")
 		else:
-			print("One or more object definitions failed!")
+			print("[CozmoBot] Box object definition failed!")
 			return
-
-		print("Show the above markers to Cozmo and you will see the related objects "
-			  "annotated in Cozmo's view window, you will also see print messages "
-			  "everytime a custom object enters or exits Cozmo's view.")

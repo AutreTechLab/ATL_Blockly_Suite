@@ -45,6 +45,22 @@ Blockly.Python['math_angle'] = function(block) {
   return [code, order];
 };
 
+Blockly.Python['cozmo_control_backpack_lights'] = function(block) {
+  var dropdown_backpack_light = block.getFieldValue('BACKPACK_LIGHT');
+  // TODO: Assemble Python into code variable.
+  var code = 'bot.setBackpackLights(' + dropdown_backpack_light + ')\n';
+  return code;
+};
+
+
+Blockly.Python['cozmo_control_cube_lights'] = function(block) {
+  var dropdown_cube_light = block.getFieldValue('CUBE_LIGHT');
+  var dropdown_cube_num = block.getFieldValue('CUBE_NUM');
+  // TODO: Assemble Python into code variable.
+  var code = 'bot.resetCubes()\nbot.setCubeLight(' + dropdown_cube_light + ',' + dropdown_cube_num + ')\n';
+  return code;
+};
+
 
 Blockly.Python['cozmo_set_cube_model'] = function(block) {
   var model = block.getFieldValue('MODEL');
@@ -247,10 +263,10 @@ function getFloatOrVar(block, fieldName) {
 // ATL Custom Objects
 
 Blockly.Python['cozmo_object_visible_number_boolean'] = function(block) {
-  var num = block.getFieldValue('OBJECT_NUM');
+  var obj_num = block.getFieldValue('OBJECT_NUM');
   Blockly.Python.definitions_['import_custom_object'] = 'from cozmo.objects import CustomObject, CustomObjectMarkers, CustomObjectTypes';
-  var code = "bot......." + num + "Id)";
-  return [code, Blockly.Python.ORDER_ATOMIC];
+  var code = "bot.waitForCustomMarker("+ obj_num + ")\n";
+  return code;
 };
 
 
@@ -260,13 +276,41 @@ Blockly.Python['cozmo_define_custom_cube'] = function(block) {
   var number_cube_dimension = block.getFieldValue('CUBE_DIMENSION');
   var number_marker_dimension = block.getFieldValue('MARKER_DIMENSION');
   Blockly.Python.definitions_['import_custom_object'] = 'from cozmo.objects import CustomObject, CustomObjectMarkers, CustomObjectTypes';
-  // TODO: Assemble Python into code variable.
   var code = 'bot.defineCustomCube(' + dropdown_custom_type + "," + dropdown_custom_marker + ',' + number_cube_dimension + ',' + number_marker_dimension + ',' + number_marker_dimension + ')\n';
   return code;
 };
 
+Blockly.Python['cozmo_define_custom_wall'] = function(block) {
+  var dropdown_custom_marker = block.getFieldValue('CUSTOM_MARKER');
+  var dropdown_custom_type = block.getFieldValue('CUSTOM_TYPE');
+  var number_wall_x_dimension = block.getFieldValue('WALL_X_DIMENSION');
+  var number_wall_y_dimension = block.getFieldValue('WALL_Y_DIMENSION');
+  var number_marker_dimension = block.getFieldValue('MARKER_DIMENSION');
+  Blockly.Python.definitions_['import_custom_object'] = 'from cozmo.objects import CustomObject, CustomObjectMarkers, CustomObjectTypes';
+  var code = 'bot.defineCustomWall(' + dropdown_custom_type + "," + dropdown_custom_marker + ',' + number_wall_x_dimension + ',' + number_wall_y_dimension + ',' + number_marker_dimension + ',' + number_marker_dimension + ')\n';
+  return code;
+};
+
+
+
+Blockly.Python['cozmo_define_custom_box'] = function(block) {
+  var dropdown_custom_marker_face_1 = block.getFieldValue('CUSTOM_MARKER_FACE_1');
+  var dropdown_custom_marker_face_2 = block.getFieldValue('CUSTOM_MARKER_FACE_2');
+  var dropdown_custom_marker_face_3 = block.getFieldValue('CUSTOM_MARKER_FACE_3');
+  var dropdown_custom_marker_face_4 = block.getFieldValue('CUSTOM_MARKER_FACE_4');
+  var dropdown_custom_marker_face_5 = block.getFieldValue('CUSTOM_MARKER_FACE_5');
+  var dropdown_custom_marker_face_6 = block.getFieldValue('CUSTOM_MARKER_FACE_6');
+  var dropdown_custom_type = block.getFieldValue('CUSTOM_TYPE');
+  var number_wall_deep_dimension = block.getFieldValue('WALL_DEEP_DIMENSION');
+  var number_wall_with_dimension = block.getFieldValue('WALL_WITH_DIMENSION');
+  var number_wall_tall_dimension = block.getFieldValue('WALL_TALL_DIMENSION');
+  var number_marker_dimension = block.getFieldValue('MARKER_DIMENSION');
+  Blockly.Python.definitions_['import_custom_object'] = 'from cozmo.objects import CustomObject, CustomObjectMarkers, CustomObjectTypes';
+  var code = 'bot.defineCustomBox(' + dropdown_custom_type + "," + dropdown_custom_marker_face_1 + ',' + dropdown_custom_marker_face_2 + ',' + dropdown_custom_marker_face_3 + ',' + dropdown_custom_marker_face_4 + ',' + dropdown_custom_marker_face_5 + ',' + dropdown_custom_marker_face_6 + ',' + number_wall_deep_dimension + ',' + number_wall_with_dimension + ',' + number_wall_tall_dimension + ',' + number_marker_dimension + ',' + number_marker_dimension + ')\n';
+  return code;
+};
+
 Blockly.Python['cozmo_wait_for_custom_object'] = function(block) {
-  // TODO: Assemble Python into code variable.
-  var code = 'bot.waitForCustonObject()\n';
+  var code = 'bot.waitForCustomObject()\n';
   return [code, Blockly.Python.ORDER_ATOMIC];
 };

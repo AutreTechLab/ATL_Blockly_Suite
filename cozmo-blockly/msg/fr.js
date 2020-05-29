@@ -38,7 +38,8 @@ var MSG = {
   WorkspaceDialogFormSaveCode04: "Es-tu sûr de vouloir remplacer ",
   WorkspaceDialogFormSaveCode05: "Enregistrer le code",
   WorkspaceDialogFormSaveCode06: "Nom du fichier:",
-  catCozmoActuators: "Actuateurs",
+  catCozmoActuatorsBasic: "Activités de base",
+  catCozmoActuatorsAdvanced: "Activités avancées",
   catDevTools: "Outils de codage ",
   catCozmoSensors: "Capteurs",
   catFunStuff: "Choses sympas"

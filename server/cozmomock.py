@@ -218,6 +218,7 @@ class CozmoBot:
 				'depth': depth,
 				'height': height
 			}
+
 		}
 		self._wsClient.send(json.dumps(data))
 
