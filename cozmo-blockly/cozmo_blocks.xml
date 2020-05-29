@@ -9,7 +9,14 @@
         <block type="cozmo_stop">
         </block>
       </category>
-      <category name="{catCozmoActuators}" colour="96">
+      <category name="{catCozmoActuatorsBasic}" colour="96">
+        <block type="cozmo_say">
+          <value name="TEXT">
+            <shadow type="text">
+              <field name="TEXT">{BlockCozmoSay01}</field>
+            </shadow>
+          </value>
+        </block>
         <block type="cozmo_play_animation">
         </block>
         <block type="cozmo_play_emotion">
@@ -52,8 +59,6 @@
             </shadow>
           </value>
         </block>
-        <block type="cozmo_stop">
-        </block>
         <block type="cozmo_turn">
           <value name="ANGLE">
             <shadow type="math_angle">
@@ -61,20 +66,14 @@
             </shadow>
           </value>
         </block>
-        <block type="cozmo_say">
-          <value name="TEXT">
-            <shadow type="text">
-              <field name="TEXT">{BlockCozmoSay01}</field>
-            </shadow>
-          </value>
+        <block type="cozmo_stop">
         </block>
-        <block type="cozmo_delay">
-          <value name="DELAY">
-            <shadow type="math_number">
-              <field name="NUM">1.0</field>
-            </shadow>
-          </value>
+        <block type="cozmo_control_cube_lights">
         </block>
+        <block type="cozmo_control_backpack_lights">
+        </block>
+      </category>
+      <category name="{catCozmoActuatorsAdvanced}" colour="96">
         <block type="cozmo_goto_origin">
         </block>
         <block type="cozmo_drive_to">
@@ -123,6 +122,29 @@
         </block>
         <block type="cozmo_maze">
         </block>
+        <block type="cozmo_define_custom_cube">
+          <field name="CUBE_DIMENSION">45</field>
+          <field name="MARKER_DIMENSION">35</field>
+        </block>
+        <block type="cozmo_define_custom_wall">
+          <field name="CUSTOM_TYPE">CustomObjectTypes.CustomType01</field>
+          <field name="WALL_X_DIMENSION">90</field>
+          <field name="WALL_Y_DIMENSION">120</field>
+          <field name="MARKER_DIMENSION">35</field>
+        </block>
+        <block type="cozmo_define_custom_box">
+          <field name="CUSTOM_MARKER_FACE_1">CustomObjectMarkers.Hexagons2</field>
+          <field name="CUSTOM_MARKER_FACE_2">CustomObjectMarkers.Triangles2</field>
+          <field name="CUSTOM_MARKER_FACE_3">CustomObjectMarkers.Triangles3</field>
+          <field name="CUSTOM_MARKER_FACE_4">CustomObjectMarkers.Triangles4</field>
+          <field name="CUSTOM_MARKER_FACE_5">CustomObjectMarkers.Triangles5</field>
+          <field name="CUSTOM_MARKER_FACE_6">CustomObjectMarkers.Hexagons5</field>
+          <field name="CUSTOM_TYPE">CustomObjectTypes.CustomType02</field>
+          <field name="WALL_DEEP_DIMENSION">100</field>
+          <field name="WALL_WITH_DIMENSION">20</field>
+          <field name="WALL_TALL_DIMENSION">50</field>
+          <field name="MARKER_DIMENSION">35</field>
+        </block>
       </category>
       <category name="{catCozmoSensors}" colour="96">
         <block type="cozmo_cube_seen_number_boolean">
@@ -140,8 +162,6 @@
         <block type="cozmo_set_cube_model">
         </block>
         <block type="cozmo_object_visible_number_boolean">
-        </block>
-        <block type="cozmo_define_custom_cube">
         </block>
         <block type="cozmo_wait_for_custom_object">
         </block>
